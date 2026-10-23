@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>STAR 小教练</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--red:#C0392B;--redsoft:#FBE3E0;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 60px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 6px;font-size:18px;color:var(--teal)}
+.steps{display:flex;gap:8px;flex-wrap:wrap}
+.step{flex:1;min-width:120px;text-align:center;padding:8px 10px;border-radius:12px;background:var(--card);border:2px solid var(--line);font-weight:700;color:var(--muted);font-size:14px}
+.step.on{border-color:var(--orange);color:var(--orange);background:var(--orsoft)}
+.step.done{border-color:var(--teal2);color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.sent{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin:10px 0}
+.sent.ok{border-color:var(--green);background:var(--greensoft)}
+.sent.no{border-color:var(--red);background:var(--redsoft);animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.sent p{margin:0 0 8px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font:inherit;font-weight:700;border:2px solid var(--teal2);background:var(--card);color:var(--teal);border-radius:10px;padding:5px 14px;cursor:pointer;min-width:44px}
+.opt.nope{border-color:var(--muted);color:var(--muted)}
+.opt[disabled]{opacity:.5;cursor:default}
+.fb{font-size:14px;margin-top:6px}
+.fb.good{color:var(--green)} .fb.bad{color:var(--red)}
+.badge{display:inline-block;background:var(--teal);color:#fff;border-radius:8px;padding:0 9px;font-weight:700;margin-right:6px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:12px 0 4px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink);min-height:74px;resize:vertical}
+textarea:focus{border-color:var(--teal2)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.chip{font-size:13px;border-radius:999px;padding:1px 10px;background:var(--line);color:var(--muted)}
+.chip.ok{background:var(--greensoft);color:var(--green)}
+.chip.warn{background:var(--orsoft);color:var(--orange)}
+.out{display:flex;flex-direction:column;gap:10px}
+.starcard{background:#fff;border:3px solid var(--teal);border-radius:18px;padding:14px}
+.sr{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.sr:last-child{border-bottom:0}
+.sr b{flex:0 0 34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center}
+.sr div{min-width:0;word-break:break-all}
+.sr small{display:block;color:var(--muted)}
+.pic{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+.note{font-size:13px;color:var(--muted)}
+mark{background:#FFE08A;border-radius:4px}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="wrap">
+ <div><h1>STAR 小教练</h1><p class="sub">选一段你自己的经历，填四格。写的时候，这里会提醒你缺了什么。写完复制保存，或存成图片。</p></div>
+
+ <div id="p2" class="card">
+  <h2>写自己的：选一段经历（实习、比赛、社团、兼职、课程项目都行）</h2>
+  <div class="row"><button class="btn alt" id="demo" type="button">看示例（迎新晚会）</button><button class="btn alt" id="clr" type="button">清空</button></div>
+  <label class="f" for="fs">S　情境<small>当时是什么背景、什么项目</small></label><textarea id="fs"></textarea><div class="chips" id="cs"></div>
+  <label class="f" for="ft">T　任务<small>你在里面负责什么，目标是什么</small></label><textarea id="ft"></textarea><div class="chips" id="ct"></div>
+  <label class="f" for="fa">A　行动<small>你具体做了哪几件事，说“我”，少说“我们”</small></label><textarea id="fa"></textarea><div class="chips" id="ca"></div>
+  <label class="f" for="fr">R　结果<small>结果怎样，尽量写出数字</small></label><textarea id="fr"></textarea><div class="chips" id="cr"></div>
+  <div class="row" style="margin-top:14px"><button class="btn or" id="cpy" type="button">复制四格文字</button><button class="btn alt" id="cai" type="button">复制给 AI 检查</button><button class="btn alt" id="save" type="button">保存成图片</button></div>
+  <div class="note" id="msg" role="status" style="margin-top:8px"></div>
+  <img id="pic" class="pic" alt="我的STAR图片" hidden style="margin-top:8px">
+  <div class="note" style="margin-top:8px">写完点“复制四格文字”，粘到备忘录或对分易里保存。图片出现后长按保存（电脑右键另存为）。“复制给 AI 检查”带着课件的提示词 4，缺哪项，AI 会告诉你。</div>
+ </div>
+
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const F={s:$('#fs'),t:$('#ft'),a:$('#fa'),r:$('#fr')};
+function chip(el,items){$(el).innerHTML=items.map(([c,t])=>`<span class="chip ${c}">${esc(t)}</span>`).join('')}
+function check(){
+  const s=F.s.value.trim(),t=F.t.value.trim(),a=F.a.value.trim(),r=F.r.value.trim();
+  chip('#cs',[s.length>=10?['ok','够具体了']:['','再补一点：什么时间、什么场合、什么项目']]);
+  chip('#ct',[t.length>=8?['ok','够具体了']:['','写你负责什么，目标是什么']]);
+  const me=(a.match(/我(?!们)/g)||[]).length,we=(a.match(/我们/g)||[]).length,seg=a.split(/[，,；;、。\n]/).filter(x=>x.trim().length>1).length;
+  const ai=[];
+  ai.push(a.length>=15?['ok','写得不短']:['','再写具体：做了哪几件事']);
+  ai.push(seg>=3?['ok','写了几件事']:['','试着写出 2 到 3 件具体的事']);
+  ai.push(we>me?['warn',`“我们”(${we}次)比“我”(${me}次)多：改成“我做了……”`]:me>0?['ok','说了“我”']:['','用“我”开头，写你自己做的']);
+  chip('#ca',ai);
+  const num=/[0-9０-９]|%|％|倍|零|[一二三四五六七八九十百千万]/.test(r);
+  chip('#cr',[r.length>=6?['ok','写了结果']:['','结果怎样？'],num?['ok','带了数字']:['warn','最好带数字，例如“10分钟内全部入场”']]);
+}
+Object.values(F).forEach(e=>e.addEventListener('input',check));check();
+$('#demo').onclick=()=>{F.s.value='大二，学院迎新晚会，现场人手不够。';F.t.value='我负责300名新生的签到和引导。';F.a.value='我做了分组签到表，加开3个入口，带志愿者预演了一遍。';F.r.value='10分钟内全部入场，签到零差错。';check()};
+$('#clr').onclick=()=>{Object.values(F).forEach(e=>e.value='');check()};
+const V=()=>({s:F.s.value.trim(),t:F.t.value.trim(),a:F.a.value.trim(),r:F.r.value.trim()});
+function txt(){const v=V();return `S情境：${v.s||'【……】'}\nT任务：${v.t||'【……】'}\nA行动：${v.a||'【……】'}\nR结果：${v.r||'【……（尽量写数字）】'}`}
+async function copy(t,ok){try{await navigator.clipboard.writeText(t);$('#msg').textContent=ok}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();let g=false;try{g=document.execCommand('copy')}catch(_){}ta.remove();$('#msg').textContent=g?ok:'复制没成功，请长按下面的文字手动复制。'}}
+$('#cpy').onclick=()=>copy(txt(),'已复制四格文字。');
+$('#cai').onclick=()=>copy(`这是我用STAR整理的一段个人经历。请只使用我写的内容，不要编造任何细节：\n${txt()}\n请你：\n1. 逐项检查S、T、A、R有没有缺，缺的告诉我该补什么，不要替我补；\n2. 指出哪一句是在说“我们”，提醒我改成“我做了什么”；\n3. 先用我已写的内容整理成一段1分钟内的面试回答，缺的地方写（待补）；\n依据不足的地方直接说“依据不足”，不要猜。\n等我补完缺的内容，你再更新这段回答。`,'已复制。粘到豆包、DeepSeek、Kimi 等发送就行。');
+function wrap(s,n){const out=[];String(s).split('\n').forEach(line=>{let cur='',w=0;for(const ch of line){const cw=/[\u0000-ÿ]/.test(ch)?.55:1;if(w+cw>n){out.push(cur);cur='';w=0}cur+=ch;w+=cw}out.push(cur)});return out}
+$('#save').onclick=()=>{
+  const v=V(),W=900,P=40,rows=[['S','情境',v.s],['T','任务',v.t],['A','行动',v.a],['R','结果',v.r]];
+  let y=150,g='';
+  rows.forEach(([k,n,x])=>{const ls=wrap(x||'（还没写）',23);const h=Math.max(70,ls.length*38+48);
+    g+=`<circle cx="${P+30}" cy="${y+30}" r="30" fill="#165E5D"/><text x="${P+30}" y="${y+41}" font-size="32" font-weight="700" fill="#fff" text-anchor="middle">${k}</text><text x="${P+90}" y="${y+22}" font-size="22" fill="#7F7F7F">${n}</text>`+ls.map((l,i)=>`<text x="${P+90}" y="${y+58+i*38}" font-size="30" fill="#404040">${esc(l)}</text>`).join('')+`<line x1="${P}" y1="${y+h}" x2="${W-P}" y2="${y+h}" stroke="#E3DCCB" stroke-width="2" stroke-dasharray="8 8"/>`;y+=h+20});
+  const H=y+30;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" font-family="Microsoft YaHei,PingFang SC,sans-serif"><rect width="${W}" height="${H}" fill="#FFFAF0"/><rect x="12" y="12" width="${W-24}" height="${H-24}" rx="26" fill="#fff" stroke="#165E5D" stroke-width="5"/><text x="${P}" y="88" font-size="42" font-weight="700" fill="#165E5D">我的 STAR</text><text x="${P}" y="124" font-size="22" fill="#7F7F7F">情境 · 任务 · 行动 · 结果</text>${g}</svg>`;
+  const img=new Image();img.onload=()=>{try{const c=document.createElement('canvas');c.width=W*2;c.height=H*2;const x=c.getContext('2d');x.scale(2,2);x.drawImage(img,0,0);$('#pic').src=c.toDataURL('image/png');$('#pic').hidden=false;$('#msg').textContent='图片好了，长按图片保存。'}catch(e){$('#msg').textContent='保存图片失败，请直接截图这张卡。'}};
+  img.onerror=()=>{$('#msg').textContent='保存图片失败，请直接截图这张卡。'};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+};
+</script></body></html>

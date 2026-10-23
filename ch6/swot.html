@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SWOT小练习</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 70px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--teal);display:flex;align-items:center;gap:10px}
+.card h2 i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:15px;flex:0 0 30px}
+.hint{margin:0 0 10px;color:var(--muted);font-size:14px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:10px 0 4px;font-size:14px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea,input[type=text]{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);color:var(--ink)}
+textarea{min-height:66px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,.seg button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cmp{border:2px solid var(--line);border-radius:14px;padding:8px 12px 12px;background:var(--bg);min-width:0}
+.seg{display:inline-flex;border:2px solid var(--teal2);border-radius:10px;overflow:hidden;margin:6px 0}
+.seg button{font:inherit;font-weight:700;border:0;background:var(--card);color:var(--teal);padding:3px 14px;cursor:pointer}
+.seg button.on{background:var(--teal2);color:#fff}
+.layer{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px;background:var(--bg)}
+.layer h3{margin:0 0 6px;font-size:15px;color:var(--orange)}
+.layer h3 small{color:var(--muted);font-weight:400;margin-left:6px}
+.layer textarea{min-height:56px;background:var(--card)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:13px;border-radius:999px;padding:1px 10px;background:var(--line);color:var(--muted)}
+.chip.ok{background:var(--greensoft);color:var(--green)}
+.chip.warn{background:var(--orsoft);color:var(--orange)}
+.note{font-size:13px;color:var(--muted)}
+.msg{font-size:14px;color:var(--teal);min-height:1.4em;margin-top:6px}
+.out{background:#fff;border:3px solid var(--teal);border-radius:18px;padding:14px}
+.out h3{margin:0 0 4px;color:var(--teal);font-size:18px}
+.out table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.out th,.out td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;word-break:break-all}
+.out th{background:var(--tealsoft);color:var(--teal)}
+.pic{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block;margin-top:8px}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps span{flex:1;min-width:110px;text-align:center;padding:6px 8px;border-radius:10px;background:var(--tealsoft);color:var(--teal);font-weight:700;font-size:14px}
+[hidden]{display:none!important}
+
+.q{border:2px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--card)}
+.q.done{border-color:var(--green);background:var(--greensoft)}
+.q p.s{margin:0 0 8px;font-size:17px;font-weight:700;color:var(--ink)}
+.q .opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font:inherit;font-weight:700;border:2px solid var(--teal2);background:#fff;color:var(--teal);border-radius:12px;padding:6px 12px;cursor:pointer;text-align:left}
+.opt small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.opt.bad{border-color:var(--orange);background:var(--orsoft);color:var(--orange)}
+.opt.good{border-color:var(--green);background:var(--green);color:#fff}
+.opt.good small{color:#e8fff0}
+.fb{margin:8px 0 0;font-size:14px;min-height:1.4em}
+.fb.ok{color:var(--green)}.fb.no{color:var(--orange)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:700;border:2px solid var(--teal);background:#fff;color:var(--teal);border-radius:12px;padding:6px 14px;cursor:pointer}
+.tabs button.on{background:var(--teal);color:#fff}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}}
+.sw{border:2px solid var(--line);border-radius:14px;padding:8px 10px;background:var(--bg)}
+.sw h3{margin:0 0 4px;font-size:15px}.sw.i h3{color:var(--green)}.sw.e h3{color:var(--orange)}
+.sw textarea{min-height:110px;background:#fff}
+details{margin-top:6px}summary{cursor:pointer;color:var(--teal);font-weight:700}
+</style></head><body>
+<div class="wrap">
+<div><h1>SWOT小练习：分一分，再分析自己和自己的产品</h1><p class="sub">三步：①拼一拼，②分析我自己，③分析我的产品。不用提交，写完可以复制保留，作为平时作业的一部分。</p></div>
+<div class="tabs" id="tabs"><button class="on" data-t="1">① 拼一拼</button><button data-t="2">② 分析我自己</button><button data-t="3">③ 分析我的产品</button></div>
+
+<div class="card" id="t1"><h2><i>1</i>拼一拼：校园拼单App</h2>
+<p class="hint">每条先问自己：<b>这是自己的事，还是外面的事？对产品有利，还是不利？</b>然后点对应的格子。选对变绿，选错有提示。</p>
+<div id="qs" class="wrap" style="gap:10px"></div><p class="msg" id="sum1"></p></div>
+
+<div class="card" id="t2" hidden><h2><i>2</i>用SWOT分析我自己</h2>
+<p class="hint">想一个目标，比如“毕业后做用户体验设计岗”“这学期拿到课程优秀”。<b>自己的事写优势/劣势，外面的事写机会/威胁。</b></p>
+<label class="f" for="g2">我的目标</label><input type="text" id="g2" placeholder="例如：毕业后做用户体验设计岗">
+<div class="grid4" id="b2"></div><div class="chips" id="ck2"></div>
+<div class="row" style="margin-top:8px"><button class="btn" id="c2" type="button">复制我的SWOT</button><button class="btn alt" id="a2" type="button">复制给AI检查</button></div><p class="msg" id="m2"></p></div>
+
+<div class="card" id="t3" hidden><h2><i>3</i>用SWOT分析我的产品</h2>
+<p class="hint">想一想你作业的产品，和你挑的竞品比，它的优势劣势在哪，外面有什么机会和威胁。</p>
+<label class="f" for="g3">我的产品<small>一句话</small></label><input type="text" id="g3" placeholder="例如：校园拼单App，给住校大学生凑起送价用">
+<div class="grid4" id="b3"></div><div class="chips" id="ck3"></div>
+<div class="row" style="margin-top:8px"><button class="btn" id="c3" type="button">复制我的SWOT</button><button class="btn alt" id="a3" type="button">复制给AI检查</button></div><p class="msg" id="m3"></p></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const NAMES=[['S','优势','自己的、对产品有利','我擅长什么？产品比竞品强在哪？','i'],['W','劣势','自己的、对产品不利','我哪里还不够？产品比竞品弱在哪？','i'],['O','机会','外面的、对产品有利','外面有什么变化对我有利？','e'],['T','威胁','外面的、对产品不利','外面有什么变化对我不利？','e']];
+const Q=[['同班同学匹配，凑单更快',0,'自己的、有利：优势。'],['刚开始用的人少',1,'自己的、不利：劣势。'],['新生入学季，大家都在找人拼',2,'外面的、有利：机会。'],['大家已经习惯用微信群接龙',3,'外面的、不利：威胁。'],['团队只有两个人，没钱做推广',1,'是团队自己的情况，不利：劣势。'],['学校正在推进校园数字化服务',2,'外面的环境，有利：机会。'],['外卖平台也推出了拼单优惠',3,'外面的竞争对手，不利：威胁。']];
+let ok=0;
+Q.forEach(([t,a,e],i)=>{const d=document.createElement('div');d.className='q';let first=true;
+ d.innerHTML=`<p class="s">${i+1}　${t}</p><div class="opts"></div><p class="fb"></p>`;const o=d.querySelector('.opts'),fb=d.querySelector('.fb');
+ NAMES.forEach(([k,n,sub],j)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=`${n} ${k}<small>${sub}</small>`;
+  b.onclick=()=>{if(d.classList.contains('done'))return;
+   if(j===a){b.classList.add('good');d.classList.add('done');fb.className='fb ok';fb.textContent='对了。'+e;if(first)ok++;$('#sum1').textContent=`一次就选对：${ok} / ${Q.length}（做完再点上面的②）`}
+   else{first=false;b.classList.add('bad');fb.className='fb no';fb.textContent='再想想：这是自己的事还是外面的事？对产品有利还是不利？'}};o.appendChild(b)});
+ $('#qs').appendChild(d)});
+// tabs
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));[1,2,3].forEach(n=>$('#t'+n).hidden=(String(n)!==b.dataset.t))});
+// boxes
+const EXT=/市场|行业|政策|趋势|对手|竞品|竞争|平台|大家都|越来越|疫情|经济|招聘|学校/,INT=/我们|我自己|我的|团队|技术|能力|擅长|不会|经验|成绩|性格/;
+function build(id,pre){const g=$('#'+id);g.innerHTML=NAMES.map(([k,n,sub,ph,t])=>`<div class="sw ${t}"><h3>${n} ${k}<small class="note"> ${sub}</small></h3><textarea id="${pre}${k}" placeholder="${ph}"></textarea></div>`).join('')}
+build('b2','p');build('b3','q');
+function chk(pre,ck,gid){const v=k=>($('#'+pre+k).value||'').trim();const c=[];
+ ['S','W','O','T'].forEach(k=>{const n=NAMES.find(x=>x[0]===k)[1];c.push(v(k)?['ok',n+' 写了']:['warn',n+' 还空着'])});
+ if(EXT.test(v('S')+v('W')))c.push(['warn','优势/劣势里有像“外面的事”的内容，是不是该放机会/威胁？']);
+ if(INT.test(v('O')+v('T')))c.push(['warn','机会/威胁里有像“自己的事”的内容，是不是该放优势/劣势？']);
+ if(c.every(x=>x[0]==='ok'))c.push(['ok','四格都写了，分得也比较清楚']);
+ $('#'+ck).innerHTML=c.map(([k,t])=>`<span class="chip ${k}">${t}</span>`).join('');
+ try{localStorage.setItem('swot6'+pre,JSON.stringify(Object.fromEntries(['S','W','O','T'].map(k=>[k,v(k)]).concat([['g',$('#'+gid).value]]))))}catch(e){}}
+[['p','ck2','g2'],['q','ck3','g3']].forEach(([p,c,g])=>{['S','W','O','T'].forEach(k=>$('#'+p+k).addEventListener('input',()=>chk(p,c,g)));$('#'+g).addEventListener('input',()=>chk(p,c,g));
+ try{const d=JSON.parse(localStorage.getItem('swot6'+p)||'null');if(d){['S','W','O','T'].forEach(k=>$('#'+p+k).value=d[k]||'');$('#'+g).value=d.g||''}}catch(e){}chk(p,c,g)});
+async function cp(t,m,ok){try{await navigator.clipboard.writeText(t);$(m).textContent=ok}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();let g=false;try{g=document.execCommand('copy')}catch(_){}ta.remove();$(m).textContent=g?ok:'复制没成功，请手动选中复制。'}}
+function txt(pre,gid,who){const v=k=>($('#'+pre+k).value||'').trim()||'（空）';return `【${who}的SWOT】${$('#'+gid).value||''}\n优势S：${v('S')}\n劣势W：${v('W')}\n机会O：${v('O')}\n威胁T：${v('T')}`}
+$('#c2').onclick=()=>cp(txt('p','g2','我自己'),'#m2','已复制，可以粘到备忘录或文档里保存。');
+$('#c3').onclick=()=>cp(txt('q','g3','我的产品'),'#m3','已复制，可以粘到备忘录或文档里保存。');
+const AIP='请帮我检查下面这份SWOT：1. 优势、劣势是否只写了“自己”的事，机会、威胁是否只写了“外面”的事？哪一条放错了，请指出并说明理由；2. 每格是否具体，有没有空话；3. 不要替我重写，只指出问题。\n\n';
+$('#a2').onclick=()=>cp(AIP+txt('p','g2','我自己'),'#m2','已复制，粘到AI发送。');
+$('#a3').onclick=()=>cp(AIP+txt('q','g3','我的产品'),'#m3','已复制，粘到AI发送。');
+</script></body></html>

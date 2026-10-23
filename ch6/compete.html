@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>竞品分析小助手</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 70px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--teal);display:flex;align-items:center;gap:10px}
+.card h2 i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:15px;flex:0 0 30px}
+.hint{margin:0 0 10px;color:var(--muted);font-size:14px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:10px 0 4px;font-size:14px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea,input[type=text]{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);color:var(--ink)}
+textarea{min-height:66px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,.seg button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cmp{border:2px solid var(--line);border-radius:14px;padding:8px 12px 12px;background:var(--bg);min-width:0}
+.seg{display:inline-flex;border:2px solid var(--teal2);border-radius:10px;overflow:hidden;margin:6px 0}
+.seg button{font:inherit;font-weight:700;border:0;background:var(--card);color:var(--teal);padding:3px 14px;cursor:pointer}
+.seg button.on{background:var(--teal2);color:#fff}
+.layer{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px;background:var(--bg)}
+.layer h3{margin:0 0 6px;font-size:15px;color:var(--orange)}
+.layer h3 small{color:var(--muted);font-weight:400;margin-left:6px}
+.layer textarea{min-height:56px;background:var(--card)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:13px;border-radius:999px;padding:1px 10px;background:var(--line);color:var(--muted)}
+.chip.ok{background:var(--greensoft);color:var(--green)}
+.chip.warn{background:var(--orsoft);color:var(--orange)}
+.note{font-size:13px;color:var(--muted)}
+.msg{font-size:14px;color:var(--teal);min-height:1.4em;margin-top:6px}
+.out{background:#fff;border:3px solid var(--teal);border-radius:18px;padding:14px}
+.out h3{margin:0 0 4px;color:var(--teal);font-size:18px}
+.out table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.out th,.out td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;word-break:break-all}
+.out th{background:var(--tealsoft);color:var(--teal)}
+.pic{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block;margin-top:8px}
+.thumbs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}.thumbs span{position:relative}.thumbs img{height:110px;border-radius:8px;border:1px solid var(--line);display:block}.thumbs button{position:absolute;top:2px;right:2px;border:0;border-radius:50%;width:22px;height:22px;background:#0009;color:#fff;cursor:pointer;line-height:20px;padding:0}.shots{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}.shots img{height:200px;border-radius:8px;border:1px solid var(--line)}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps span{flex:1;min-width:110px;text-align:center;padding:6px 8px;border-radius:10px;background:var(--tealsoft);color:var(--teal);font-weight:700;font-size:14px}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="wrap">
+ <div><h1>竞品分析小助手</h1><p class="sub">你只管写自己的产品方向，找竞品、做五要素对比，都让 AI 帮你。最后得到一页“我的竞品分析”，复制或存成图片就行。</p></div>
+ <div class="steps"><span>① 写方向</span><span>② AI 找竞品</span><span>③ AI 做五要素</span><span>④ 加截图</span><span>⑤ 核对</span><span>⑥ 复制保留</span></div>
+
+ <div class="card">
+  <h2><i>1</i>写下你作业的方向</h2>
+  <p class="hint">照着你平时作业的内容写，一句话就行。</p>
+  <div class="row"><button class="btn alt" id="demo" type="button">看示例（校园拼单 App）</button><button class="btn alt" id="clr" type="button">清空</button></div>
+  <label class="f" for="dir">产品方向<small>你的作业要做什么产品</small></label><input type="text" id="dir" placeholder="例如：校园拼单App">
+  <label class="f" for="usr">目标用户<small>主要给谁用</small></label><input type="text" id="usr" placeholder="例如：住校大学生">
+  <label class="f" for="pain">想解决的痛点<small>调研里找到的一个痛点</small></label><input type="text" id="pain" placeholder="例如：点外卖凑不够起送价，又不想找人一个个问">
+ </div>
+
+ <div class="card">
+  <h2><i>2</i>让 AI 帮你找竞品</h2>
+  <p class="hint">点下面的按钮复制提示词，粘到豆包、DeepSeek、Kimi 等，发送。AI 会推荐几款，你挑两款：一款直接竞品，一款间接竞品。</p>
+  <div class="row"><button class="btn or" id="p1" type="button">复制：找竞品的提示词</button></div>
+  <div class="msg" id="g1" role="status"></div>
+  <div class="two" style="margin-top:8px">
+   <div class="cmp"><label class="f" for="c1">竞品1<small>App 名字</small></label><input type="text" id="c1" placeholder="例如：美团外卖">
+     <div class="seg" id="s1"><button type="button" data-v="直接" class="on">直接竞品</button><button type="button" data-v="间接">间接竞品</button></div></div>
+   <div class="cmp"><label class="f" for="c2">竞品2<small>App 名字</small></label><input type="text" id="c2" placeholder="例如：微信接龙小程序">
+     <div class="seg" id="s2"><button type="button" data-v="直接">直接竞品</button><button type="button" data-v="间接" class="on">间接竞品</button></div></div>
+  </div>
+  <div class="chips" id="ch1"></div>
+  <p class="note">直接竞品：目标和功能都很像。间接竞品：解决同一类需求，但方式不同。选好后，在手机应用商店里搜一下名字，搜得到才算真实存在。</p>
+ </div>
+
+ <div class="card">
+  <h2><i>3</i>让 AI 按五要素做对比和 SWOT</h2>
+  <p class="hint">点按钮复制提示词，发给 AI。AI 回答后，整段复制，粘到下面的框里，点“识别”，五层会自动填进格子。</p>
+  <div class="row"><button class="btn or" id="p2" type="button">复制：做五要素对比的提示词</button></div>
+  <div class="msg" id="g2" role="status"></div>
+  <label class="f" for="paste">把 AI 的回答粘贴在这里</label>
+  <textarea id="paste" placeholder="整段粘贴 AI 的回答。识别不出来也没关系，下面的格子可以手动填。"></textarea>
+  <div class="row" style="margin-top:8px"><button class="btn" id="parse" type="button">识别并填入</button></div>
+  <div class="msg" id="g3" role="status"></div>
+  <div id="layers"></div>
+  <h3 style="margin:16px 0 4px;color:var(--teal);font-size:16px">SWOT（针对你自己的产品）<small class="note">优势、劣势看产品自己；机会、威胁看外面的环境</small></h3>
+  <div class="two">
+   <div><label class="f" for="sw_s">优势 S</label><textarea id="sw_s"></textarea></div>
+   <div><label class="f" for="sw_w">劣势 W</label><textarea id="sw_w"></textarea></div>
+   <div><label class="f" for="sw_o">机会 O</label><textarea id="sw_o"></textarea></div>
+   <div><label class="f" for="sw_t">威胁 T</label><textarea id="sw_t"></textarea></div>
+  </div>
+  <label class="f" for="diff">我的差异点<small>我的产品最想在哪一层，比竞品做得不一样</small></label>
+  <textarea id="diff"></textarea>
+ </div>
+
+ <div class="card">
+  <h2><i>4</i>加几张截图</h2>
+  <p class="hint">打开竞品 App，用手机截屏：首页、关键流程、一个有特点的页面，每款最多 3 张。图片只留在你的浏览器里，不会上传。没有截图也能往下做，但成品会少一块。</p>
+  <div class="two">
+   <div class="cmp"><label class="f" id="lsh1" for="f1">竞品1 的截图</label><input type="file" id="f1" accept="image/*" multiple><div class="thumbs" id="t1"></div></div>
+   <div class="cmp"><label class="f" id="lsh2" for="f2">竞品2 的截图</label><input type="file" id="f2" accept="image/*" multiple><div class="thumbs" id="t2"></div></div>
+  </div>
+  <div class="cmp" style="margin-top:10px"><label class="f" for="f3">我的产品草图<small>可选：手绘或想法截图，最多 2 张</small></label><input type="file" id="f3" accept="image/*" multiple><div class="thumbs" id="t3"></div></div>
+  <p class="note">点图片右上角的 × 可以删掉。</p>
+ </div>
+
+ <div class="card">
+  <h2><i>5</i>核对一下</h2>
+  <p class="hint">AI 容易编数字、放错层。下面几条自动检查，黄色的是提醒你去看一眼。</p>
+  <div class="chips" id="ck"></div>
+  <p class="note" style="margin-top:8px">最实在的核对：拿手机打开竞品 App，对着“表现层”和“框架层”那两格看一眼，对不上就改。</p>
+ </div>
+
+ <div class="card">
+  <h2><i>6</i>我的竞品分析</h2>
+  <p class="hint">写完点“复制全文”，粘到备忘录或对分易里保存；也可以存成图片，保存好，作为平时作业的一部分。</p>
+  <div class="row"><button class="btn or" id="cpy" type="button">复制全文</button><button class="btn alt" id="save" type="button">保存成图片</button><button class="btn alt" id="show" type="button">看看成品</button></div>
+  <div class="msg" id="mm" role="status"></div>
+  <div class="out" id="out" hidden></div>
+  <img id="pic" class="pic" alt="我的竞品分析图片" hidden>
+ </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LAYERS=[['战略层','产品想满足什么需求、给谁用'],['范围层','有哪些功能'],['结构层','完成一件事要走哪几步'],['框架层','页面怎么布局、入口放哪儿'],['表现层','颜色、图标、字体这些看得见的']];
+const T={c1k:'直接',c2k:'间接'};
+$('#layers').innerHTML=LAYERS.map(([n,d],i)=>`<div class="layer"><h3>${n}<small>${d}</small></h3><div class="three">
+ <div><label class="f" for="a${i}" id="la${i}">竞品1</label><textarea id="a${i}"></textarea></div>
+ <div><label class="f" for="b${i}" id="lb${i}">竞品2</label><textarea id="b${i}"></textarea></div>
+ <div><label class="f" for="m${i}">我的产品打算怎么做</label><textarea id="m${i}"></textarea></div>
+ <div><label class="f" for="h${i}">看完对比，我的启发</label><textarea id="h${i}" placeholder="这一层我该学谁、避开什么"></textarea></div></div></div>`).join('');
+const ids=['dir','usr','pain','c1','c2','paste','sw_s','sw_w','sw_o','sw_t','diff',...LAYERS.flatMap((_,i)=>['a'+i,'b'+i,'m'+i,'h'+i])];
+const kind={1:'直接',2:'间接'};
+function seg(id,n){document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.toggle('on',x===b));kind[n]=b.dataset.v;upd()})}
+seg('s1',1);seg('s2',2);
+function setKind(n,v){kind[n]=v;document.querySelectorAll('#s'+n+' button').forEach(x=>x.classList.toggle('on',x.dataset.v===v))}
+const V=id=>$('#'+id).value.trim();
+function names(){return [V('c1')||'竞品1',V('c2')||'竞品2']}
+
+const shots={1:[],2:[],3:[]},LIM={1:3,2:3,3:2};
+function shotHtml(){const b=[[names()[0],1],[names()[1],2],['我的产品草图',3]].filter(x=>shots[x[1]].length);return b.length?`<p style="margin:10px 0 2px"><b style="color:var(--teal)">页面截图对照</b></p>`+b.map(([n,k])=>`<div class="note" style="margin-top:6px">${esc(n)}</div><div class="shots">${shots[k].map(i=>`<img src="${i.d}" alt="">`).join('')}</div>`).join(''):''}
+function drawThumbs(k){$('#t'+k).innerHTML='';shots[k].forEach((im,j)=>{const sp=document.createElement('span');sp.innerHTML=`<img src="${im.d}" alt="截图${j+1}"><button type="button" aria-label="删除">×</button>`;sp.querySelector('button').onclick=()=>{shots[k].splice(j,1);drawThumbs(k);upd()};$('#t'+k).appendChild(sp)})}
+function readImg(file){return new Promise(res=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const m=Math.min(1,900/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*m);c.height=Math.round(im.height*m);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res({d:c.toDataURL('image/jpeg',0.82),w:c.width,h:c.height})};im.onerror=()=>res(null);im.src=r.result};r.onerror=()=>res(null);r.readAsDataURL(file)})}
+[1,2,3].forEach(k=>{$('#f'+k).addEventListener('change',async e=>{for(const f of [...e.target.files]){if(shots[k].length>=LIM[k])break;const o=await readImg(f);if(o)shots[k].push(o)}e.target.value='';drawThumbs(k);upd()})});
+function mock(col,kind){const c=document.createElement('canvas');c.width=360;c.height=640;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,360,640);x.fillStyle=col;x.fillRect(0,0,360,70);x.fillStyle='#fff';x.font='bold 26px sans-serif';x.fillText(kind,18,44);
+ for(let i=0;i<5;i++){x.fillStyle=col+'44';x.fillRect(18,96+i*100,90,76);x.fillStyle='#d9d9d9';x.fillRect(124,106+i*100,200,14);x.fillRect(124,132+i*100,140,12);x.fillStyle=col;x.fillRect(124,154+i*100,60,14)}
+ x.fillStyle=col;x.fillRect(0,590,360,50);return {d:c.toDataURL('image/jpeg',0.8),w:360,h:640}}
+function upd(){
+  const [n1,n2]=names();$('#la0,#la1').textContent;
+  $('#lsh1').textContent=n1+' 的截图';$('#lsh2').textContent=n2+' 的截图';
+  LAYERS.forEach((_,i)=>{$('#la'+i).textContent=n1+'（'+kind[1]+'）';$('#lb'+i).textContent=n2+'（'+kind[2]+'）'});
+  const c=[];
+  const has=V('c1')&&V('c2');
+  c.push(has?['ok','选了两款竞品']:['','还没选满两款']);
+  c.push(has&&kind[1]!==kind[2]?['ok','一个直接、一个间接']:has?['warn','最好一款直接、一款间接']:['','']);
+  $('#ch1').innerHTML=c.filter(x=>x[1]).map(([k,t])=>`<span class="chip ${k}">${esc(t)}</span>`).join('');
+  const ck=[];
+  const filled=LAYERS.filter((_,i)=>V('a'+i)&&V('b'+i)).length;
+  ck.push(filled===5?['ok','五层都写了']:['warn',`五层里还有 ${5-filled} 层没写完整`]);
+  const all=LAYERS.flatMap((_,i)=>[V('a'+i),V('b'+i),V('m'+i)]).join('');
+  const nums=(all.match(/[0-9０-９]+(\.[0-9]+)?\s*(%|％|亿|万|千万|元|倍|人|次)/g)||[]);
+  ck.push(nums.length&&!/来源|待核实/.test(all)?['warn',`有 ${nums.length} 处数字，没写来源：没来源的数字请删掉，或改成“待核实”`]:['ok','没有来路不明的数字']);
+  const pend=(all.match(/待核实|推测/g)||[]).length;
+  ck.push(pend?['warn',`有 ${pend} 处“待核实/推测”，去 App 里看一眼再改`]:['ok','没有待核实的内容']);
+  const s4=['sw_s','sw_w','sw_o','sw_t'].filter(id=>V(id)).length;
+  ck.push(s4===4?['ok','SWOT 四格都写了']:['warn',`SWOT 还有 ${4-s4} 格没写`]);
+  ck.push(V('diff')?['ok','写了差异点']:['warn','还没写差异点']);
+  ck.push(shots[1].length&&shots[2].length?['ok',`有截图：竞品1 ${shots[1].length} 张，竞品2 ${shots[2].length} 张`]:['warn','两款竞品都最好加几张截图']);
+  $('#ck').innerHTML=ck.map(([k,t])=>`<span class="chip ${k}">${esc(t)}</span>`).join('');
+  try{localStorage.setItem('cmp6',JSON.stringify({v:Object.fromEntries(ids.map(i=>[i,$('#'+i).value])),k:kind}))}catch(e){}
+}
+ids.forEach(i=>$('#'+i).addEventListener('input',upd));
+try{const d=JSON.parse(localStorage.getItem('cmp6')||'null');if(d){ids.forEach(i=>{if(d.v[i]!=null)$('#'+i).value=d.v[i]});setKind(1,d.k[1]||'直接');setKind(2,d.k[2]||'间接')}}catch(e){}
+async function copy(t,el,ok){try{await navigator.clipboard.writeText(t);$(el).textContent=ok}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();let g=false;try{g=document.execCommand('copy')}catch(_){}ta.remove();$(el).textContent=g?ok:'复制没成功，请手动选中文字复制。'}}
+function ctx(){const d=V('dir')||'【产品方向】',u=V('usr')||'【目标用户】',p=V('pain')||'【想解决的痛点】';return {d,u,p}}
+$('#p1').onclick=()=>{const {d,u,p}=ctx();copy(`我在做一个产品设计作业，方向是${d}，目标用户是${u}，想解决的痛点是：${p}。
+请帮我找竞品：
+1. 推荐3款直接竞品和2款间接竞品。直接竞品：目标和功能都很像；间接竞品：解决同一类需求，但方式不同（比如换一种产品形态）。
+2. 必须是现在国内应用商店能搜到的真实App或小程序；没把握的不要写，宁可少写，也不要编造。
+3. 用表格输出：名称｜直接或间接｜一句话理由｜主要用户是谁。
+4. 最后帮我选出两款来做对比：一款直接竞品，一款间接竞品，并用一句话说明理由。`,'#g1','已复制。粘到 AI 发送，回来把它推荐的两款名字填进下面。')};
+$('#p2').onclick=()=>{const {d,u,p}=ctx(),[n1,n2]=names();copy(`我在做一个产品设计作业，方向是${d}，目标用户是${u}，想解决的痛点是：${p}。
+我选的竞品是：竞品1「${n1}」（${kind[1]}竞品），竞品2「${n2}」（${kind[2]}竞品）。
+请用用户体验五要素（战略层、范围层、结构层、框架层、表现层）帮我做竞品分析，严格按下面的格式输出，不要用表格，不要加别的内容：
+战略层｜竞品1：……｜竞品2：……｜我的产品：……｜启发：……
+范围层｜竞品1：……｜竞品2：……｜我的产品：……｜启发：……
+结构层｜竞品1：……｜竞品2：……｜我的产品：……｜启发：……
+框架层｜竞品1：……｜竞品2：……｜我的产品：……｜启发：……
+表现层｜竞品1：……｜竞品2：……｜我的产品：……｜启发：……
+SWOT｜优势：……｜劣势：……｜机会：……｜威胁：……
+差异点｜……
+要求：
+1. 每个空不超过40字，写具体的功能或设计，不要空泛评价；“启发”写看完两个竞品后，我的产品这一层该学什么、避开什么；
+2. 五层不要混：战略层写需求和用户，范围层写功能，结构层写完成任务的步骤，框架层写页面布局和入口，表现层写颜色图标字体；
+3. SWOT 针对“我的产品”：优势和劣势只写产品自身，机会和威胁只写外部环境；
+4. 不要编造任何数字、市场份额、用户规模；不确定的内容写“待核实”；
+5. 差异点：我的产品最值得在哪一层和竞品做得不一样，一句话。`,'#g2','已复制。粘到 AI 发送，回答出来后整段复制，粘到下面框里。')};
+function cell(s,k){const m=s.match(new RegExp(k+'\\s*[：:]\\s*([^｜|\\n]*)'));return m?m[1].trim().replace(/^[…\\.\\*]+$/,''):''}
+$('#parse').onclick=()=>{
+  const t=V('paste');if(!t){$('#g3').textContent='先把 AI 的回答粘到上面的框里。';return}
+  let n=0;
+  const lines=t.split(/\n/).map(l=>l.replace(/^[\s>*#\-\d.、]+/,'').replace(/\*\*/g,''));
+  LAYERS.forEach(([name],i)=>{const l=lines.find(x=>x.startsWith(name));if(!l)return;
+    const a=cell(l,'竞品1'),b=cell(l,'竞品2'),m=cell(l,'我的产品'),hh=cell(l,'启发');
+    if(a||b||m){n++;if(a)$('#a'+i).value=a;if(b)$('#b'+i).value=b;if(m)$('#m'+i).value=m;if(hh)$('#h'+i).value=hh}});
+  const sw=lines.find(x=>x.startsWith('SWOT'));
+  if(sw){[['优势','sw_s'],['劣势','sw_w'],['机会','sw_o'],['威胁','sw_t']].forEach(([k,id])=>{const c=cell(sw,k);if(c)$('#'+id).value=c})}
+  const df=lines.find(x=>x.startsWith('差异点'));if(df){const c=df.replace(/^差异点\s*[｜|：:]?\s*/,'').trim();if(c)$('#diff').value=c}
+  $('#g3').textContent=n?`识别出 ${n} 层，已填进下面的格子，可以直接改。`:'没识别出来：可能 AI 没按格式写。你可以手动把内容复制到下面的格子，或者让 AI“严格按格式重写一遍”。';
+  upd();
+};
+function text(){
+  const [n1,n2]=names();
+  let s=`【我的竞品分析】\n产品方向：${V('dir')}\n目标用户：${V('usr')}\n想解决的痛点：${V('pain')}\n竞品1：${n1}（${kind[1]}竞品）　竞品2：${n2}（${kind[2]}竞品）\n\n一、五要素对比\n`;
+  LAYERS.forEach(([n],i)=>{s+=`${n}\n　${n1}：${V('a'+i)}\n　${n2}：${V('b'+i)}\n　我的产品：${V('m'+i)}\n　对我的启发：${V('h'+i)}\n`});
+  s+=`\n二、SWOT（我的产品）\n优势：${V('sw_s')}\n劣势：${V('sw_w')}\n机会：${V('sw_o')}\n威胁：${V('sw_t')}\n\n三、我的差异点\n${V('diff')}\n`;
+  return s}
+$('#cpy').onclick=()=>copy(text(),'#mm','已复制全文，粘到备忘录或对分易里保存。');
+function html(){
+  const [n1,n2]=names();
+  return `<h3>我的竞品分析</h3><p class="note" style="margin:0 0 8px">${esc(V('dir'))}｜用户：${esc(V('usr'))}｜痛点：${esc(V('pain'))}</p>
+  <table><tr><th style="width:10%">层次</th><th>${esc(n1)}（${kind[1]}）</th><th>${esc(n2)}（${kind[2]}）</th><th>我的产品</th><th>对我的启发</th></tr>${LAYERS.map(([n],i)=>`<tr><td><b>${n}</b></td><td>${esc(V('a'+i))}</td><td>${esc(V('b'+i))}</td><td>${esc(V('m'+i))}</td><td>${esc(V('h'+i))}</td></tr>`).join('')}</table>${shotHtml()}
+  <table style="margin-top:8px"><tr><th>优势 S</th><th>劣势 W</th><th>机会 O</th><th>威胁 T</th></tr><tr><td>${esc(V('sw_s'))}</td><td>${esc(V('sw_w'))}</td><td>${esc(V('sw_o'))}</td><td>${esc(V('sw_t'))}</td></tr></table>
+  <p style="margin:8px 0 0"><b style="color:var(--orange)">差异点：</b>${esc(V('diff'))}</p>`}
+$('#show').onclick=()=>{$('#out').innerHTML=html();$('#out').hidden=false;$('#mm').textContent=''};
+function wrap(s,n){const out=[];String(s).split('\n').forEach(line=>{let cur='',w=0;for(const ch of line){const cw=/[\u0000-ÿ]/.test(ch)?.55:1;if(w+cw>n){out.push(cur);cur='';w=0}cur+=ch;w+=cw}out.push(cur)});return out}
+$('#save').onclick=()=>{
+  const [n1,n2]=names(),W=1200,P=36,cw=[120,255,255,255,243];
+  const rows=LAYERS.map(([n],i)=>[n,V('a'+i),V('b'+i),V('m'+i),V('h'+i)]);
+  let y=170,g='';
+  const hdr=['层次',`${n1}（${kind[1]}）`,`${n2}（${kind[2]}）`,'我的产品','对我的启发'];
+  let x=P;hdr.forEach((h,k)=>{g+=`<rect x="${x}" y="${y}" width="${cw[k]}" height="46" fill="#E4F0EC" stroke="#E3DCCB"/><text x="${x+10}" y="${y+31}" font-size="22" font-weight="700" fill="#165E5D">${esc(wrap(h,cw[k]/22)[0])}</text>`;x+=cw[k]});y+=46;
+  rows.forEach(r=>{const ls=r.map((t,k)=>wrap(t||' ',(cw[k]-20)/22));const h=Math.max(...ls.map(l=>l.length))*30+22;let x=P;
+    r.forEach((_,k)=>{g+=`<rect x="${x}" y="${y}" width="${cw[k]}" height="${h}" fill="${k?'#fff':'#FFFAF0'}" stroke="#E3DCCB"/>`+ls[k].map((l,j)=>`<text x="${x+10}" y="${y+30+j*30}" font-size="21" font-weight="${k?400:700}" fill="#404040">${esc(l)}</text>`).join('');x+=cw[k]});y+=h});
+  const bands=[[n1+'（'+kind[1]+'）',shots[1]],[n2+'（'+kind[2]+'）',shots[2]],['我的产品草图',shots[3]]].filter(b=>b[1].length);
+  if(bands.length){y+=34;g+=`<text x="${P}" y="${y}" font-size="26" font-weight="700" fill="#165E5D">页面截图对照</text>`;y+=14;
+    bands.forEach(([lab,arr])=>{const tw=W-2*P,gap=14,sa=arr.reduce((a,b)=>a+b.w/b.h,0);const hh=Math.min(300,(tw-(arr.length-1)*gap)/sa);
+      g+=`<text x="${P}" y="${y+24}" font-size="21" font-weight="700" fill="#404040">${esc(lab)}</text>`;y+=34;let xx=P;
+      arr.forEach(im=>{const ww=hh*im.w/im.h;g+=`<image href="${im.d}" x="${xx}" y="${y}" width="${ww}" height="${hh}"/><rect x="${xx}" y="${y}" width="${ww}" height="${hh}" fill="none" stroke="#E3DCCB"/>`;xx+=ww+gap});y+=hh+16})}
+  y+=34;g+=`<text x="${P}" y="${y}" font-size="26" font-weight="700" fill="#165E5D">SWOT（我的产品）</text>`;y+=14;
+  const sw=[['优势 S',V('sw_s')],['劣势 W',V('sw_w')],['机会 O',V('sw_o')],['威胁 T',V('sw_t')]],sw1=(W-2*P)/4;
+  const sl=sw.map(([_,t])=>wrap(t||' ',(sw1-20)/22)),sh=Math.max(...sl.map(l=>l.length))*30+64;
+  sw.forEach(([h],k)=>{const x=P+k*sw1;g+=`<rect x="${x}" y="${y}" width="${sw1}" height="${sh}" fill="#fff" stroke="#E3DCCB"/><rect x="${x}" y="${y}" width="${sw1}" height="40" fill="#E4F0EC" stroke="#E3DCCB"/><text x="${x+10}" y="${y+28}" font-size="22" font-weight="700" fill="#165E5D">${h}</text>`+sl[k].map((l,j)=>`<text x="${x+10}" y="${y+68+j*30}" font-size="21" fill="#404040">${esc(l)}</text>`).join('')});y+=sh+30;
+  const dl=wrap('差异点：'+(V('diff')||''),52);g+=dl.map((l,j)=>`<text x="${P}" y="${y+j*32}" font-size="24" font-weight="700" fill="#B4572B">${esc(l)}</text>`).join('');y+=dl.length*32+20;
+  const H=y,sub=wrap(`${V('dir')}｜用户：${V('usr')}｜痛点：${V('pain')}`,62);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" font-family="Microsoft YaHei,PingFang SC,sans-serif"><rect width="${W}" height="${H}" fill="#FFFAF0"/><rect x="10" y="10" width="${W-20}" height="${H-20}" rx="24" fill="none" stroke="#165E5D" stroke-width="5"/><text x="${P}" y="70" font-size="44" font-weight="700" fill="#165E5D">我的竞品分析</text>${sub.slice(0,2).map((l,j)=>`<text x="${P}" y="${108+j*30}" font-size="22" fill="#7F7F7F">${esc(l)}</text>`).join('')}${g}</svg>`;
+  const img=new Image();img.onload=()=>{try{const c=document.createElement('canvas');c.width=W*1.5;c.height=H*1.5;const x=c.getContext('2d');x.scale(1.5,1.5);x.drawImage(img,0,0);$('#pic').src=c.toDataURL('image/png');$('#pic').hidden=false;$('#mm').textContent='图片好了，长按图片保存（电脑上右键另存为）。'}catch(e){$('#mm').textContent='存图失败，请直接截图，或用“复制全文”。'}};
+  img.onerror=()=>{$('#mm').textContent='存图失败，请直接截图，或用“复制全文”。'};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg)};
+$('#demo').onclick=()=>{
+  const D={dir:'校园拼单App',usr:'住校大学生',pain:'点外卖凑不够起送价，又不想一个个去问同学',c1:'美团外卖',c2:'微信接龙小程序',
+   a0:'面向所有想点外卖的人，满足“方便吃上饭”',b0:'面向要集体统计的人，满足“把大家的需求收拢”',m0:'面向同一栋楼的同学，满足“凑单省配送费”',
+   a1:'搜索商家、下单、拼单、优惠券等完整功能',b1:'发起接龙、填写数量、统计名单',m1:'同楼匹配、拼单进度、自动分摊配送费',
+   a2:'选店→选菜→拼单邀请→支付，步骤多',b2:'发起→群里转发→大家填→发起人汇总，要靠人催',m2:'选店→一键发起→同楼同学点加入→自动凑满下单',
+   a3:'首页大量商家和活动入口，拼单入口较深',b3:'页面简单，一页就是一个表单',m3:'首页只放“发起拼单”和“加入拼单”两个入口',
+   a4:'以黄色为主色，图片丰富',b4:'绿色为主，样式简朴',m4:'浅色背景加一个主色，突出按钮，少放广告',
+   sw_s:'同班同楼匹配，凑单更快',sw_w:'初期用户少，凑不满单',sw_o:'新生入学季，需求集中',sw_t:'大家习惯了用群聊接龙',
+   h0:'抓住“凑单省配送费”这个具体需求，不做全能外卖',h1:'只做拼单相关功能，别学外卖的大而全',h2:'学接龙“发起简单”，但把“统计”交给系统',h3:'首页只放两个入口',h4:'用浅色和一个主色，比美团清爽',
+   diff:'在“结构层”做减法：从发起到凑满只要三步，不用在群里催人。'};
+  Object.entries(D).forEach(([k,v])=>$('#'+k).value=v);shots[1]=[mock('#E8B93C','首页'),mock('#E8B93C','拼单'),mock('#E8B93C','订单')];shots[2]=[mock('#2E8B57','接龙首页'),mock('#2E8B57','填写')];shots[3]=[mock('#E07B2A','我的草图')];[1,2,3].forEach(drawThumbs);setKind(1,'直接');setKind(2,'间接');$('#g3').textContent='（示例，仅供参考）';upd()};
+$('#clr').onclick=()=>{ids.forEach(i=>$('#'+i).value='');[1,2,3].forEach(k=>{shots[k]=[];drawThumbs(k)});setKind(1,'直接');setKind(2,'间接');$('#out').hidden=true;$('#pic').hidden=true;['g1','g2','g3','mm'].forEach(x=>$('#'+x).textContent='');upd()};
+upd();
+</script></body></html>

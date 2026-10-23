@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>五要素小测</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 70px}
+.wrap{max-width:880px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--teal);display:flex;align-items:center;gap:10px}
+.card h2 i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:15px;flex:0 0 30px}
+.hint{margin:0 0 10px;color:var(--muted);font-size:14px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:10px 0 4px;font-size:14px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea,input[type=text]{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);color:var(--ink)}
+textarea{min-height:66px;resize:vertical}
+textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,.seg button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.three{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cmp{border:2px solid var(--line);border-radius:14px;padding:8px 12px 12px;background:var(--bg);min-width:0}
+.seg{display:inline-flex;border:2px solid var(--teal2);border-radius:10px;overflow:hidden;margin:6px 0}
+.seg button{font:inherit;font-weight:700;border:0;background:var(--card);color:var(--teal);padding:3px 14px;cursor:pointer}
+.seg button.on{background:var(--teal2);color:#fff}
+.layer{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-top:10px;background:var(--bg)}
+.layer h3{margin:0 0 6px;font-size:15px;color:var(--orange)}
+.layer h3 small{color:var(--muted);font-weight:400;margin-left:6px}
+.layer textarea{min-height:56px;background:var(--card)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:13px;border-radius:999px;padding:1px 10px;background:var(--line);color:var(--muted)}
+.chip.ok{background:var(--greensoft);color:var(--green)}
+.chip.warn{background:var(--orsoft);color:var(--orange)}
+.note{font-size:13px;color:var(--muted)}
+.msg{font-size:14px;color:var(--teal);min-height:1.4em;margin-top:6px}
+.out{background:#fff;border:3px solid var(--teal);border-radius:18px;padding:14px}
+.out h3{margin:0 0 4px;color:var(--teal);font-size:18px}
+.out table{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}
+.out th,.out td{border:1px solid var(--line);padding:5px 7px;vertical-align:top;word-break:break-all}
+.out th{background:var(--tealsoft);color:var(--teal)}
+.pic{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block;margin-top:8px}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps span{flex:1;min-width:110px;text-align:center;padding:6px 8px;border-radius:10px;background:var(--tealsoft);color:var(--teal);font-weight:700;font-size:14px}
+[hidden]{display:none!important}
+
+.q{border:2px solid var(--line);border-radius:16px;padding:12px 14px;background:var(--card)}
+.q.done{border-color:var(--green);background:var(--greensoft)}
+.q p.s{margin:0 0 8px;font-size:17px;font-weight:700;color:var(--ink)}
+.q .opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font:inherit;font-weight:700;border:2px solid var(--teal2);background:#fff;color:var(--teal);border-radius:12px;padding:6px 12px;cursor:pointer;text-align:left}
+.opt small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+.opt.bad{border-color:var(--orange);background:var(--orsoft);color:var(--orange)}
+.opt.good{border-color:var(--green);background:var(--green);color:#fff}
+.opt.good small{color:#e8fff0}
+.fb{margin:8px 0 0;font-size:14px;min-height:1.4em}
+.fb.ok{color:var(--green)}.fb.no{color:var(--orange)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tabs button{font:inherit;font-weight:700;border:2px solid var(--teal);background:#fff;color:var(--teal);border-radius:12px;padding:6px 14px;cursor:pointer}
+.tabs button.on{background:var(--teal);color:#fff}
+.grid4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.grid4{grid-template-columns:1fr}}
+.sw{border:2px solid var(--line);border-radius:14px;padding:8px 10px;background:var(--bg)}
+.sw h3{margin:0 0 4px;font-size:15px}.sw.i h3{color:var(--green)}.sw.e h3{color:var(--orange)}
+.sw textarea{min-height:110px;background:#fff}
+details{margin-top:6px}summary{cursor:pointer;color:var(--teal);font-weight:700}
+</style></head><body>
+<div class="wrap">
+<div><h1>五要素小测：这一条属于哪一层？</h1><p class="sub">点一点就行：选对会变绿，选错会告诉你这一层在问什么，可以再选。不记分，不用提交。</p></div>
+<div class="card"><h2>先看一眼：五层各问什么</h2><div id="ref" class="three"></div></div>
+<div id="qs" class="wrap" style="gap:10px"></div>
+<div class="card" id="end" hidden><h2>做完了</h2><p id="sum" class="hint"></p><p class="note">错得多的那几条，回头看一眼“这一层在问什么”。下一页课件有答案和讲解。</p></div>
+</div>
+<script>
+const $=s=>document.querySelector(s);
+const L=[['表现层','看到的颜色、图标、字体怎样？'],['框架层','页面怎么布局，入口放在哪？'],['结构层','完成一件事要走哪几步？'],['范围层','提供哪些功能和内容？'],['战略层','为谁解决什么问题？']];
+const Q=[
+['闲鱼的主题色是黄色，关键元素都用黄色高亮',0,'颜色是用户“看到”的视觉设计，属于表现层。'],
+['两款App的底部菜单都是四个功能加中间一个发布键',1,'菜单和按钮放在哪里，是页面布局和导航，属于框架层。'],
+['闲鱼定位为全品类的二手交易社区',4,'它是什么、为谁服务，属于战略层（产品定位）。'],
+['转转提供官方验机和质检服务',3,'它提供什么功能和服务，属于范围层。'],
+['发布闲置时先拍照、再写描述、再定价的步骤顺序',2,'完成一件事的步骤和顺序，属于结构层。'],
+['校园拼单App的主色用橙色，图标都是圆角',0,'颜色和图标，是表现层。'],
+['从点“发起拼单”到“付款”，要走四步',2,'走几步、先后顺序，是结构层。'],
+['这个App主要给住校大学生用，帮他们凑够起送价',4,'为谁解决什么问题，是战略层。']];
+$('#ref').innerHTML=L.map(([a,b])=>`<div class="cmp"><b style="color:var(--teal)">${a}</b><br><span class="note">${b}</span></div>`).join('');
+let done=0,first=0;
+Q.forEach(([t,a,e],i)=>{const d=document.createElement('div');d.className='q';let tried=false;
+ d.innerHTML=`<p class="s">${'ABCDEFGH'[i]}　${t}</p><div class="opts"></div><p class="fb"></p>`;
+ const o=d.querySelector('.opts'),fb=d.querySelector('.fb');
+ L.forEach(([n,q],k)=>{const b=document.createElement('button');b.type='button';b.className='opt';b.innerHTML=`${n}<small>${q}</small>`;
+  b.onclick=()=>{if(d.classList.contains('done'))return;
+   if(k===a){b.classList.add('good');d.classList.add('done');fb.className='fb ok';fb.textContent='对了。'+e;done++;if(!tried)first++;
+    if(done===Q.length){$('#end').hidden=false;$('#sum').textContent=`一次就选对：${first} / ${Q.length}`}}
+   else{tried=true;b.classList.add('bad');fb.className='fb no';fb.textContent=`${n}在问：“${q}” 再想想这一条是不是在回答它。`}};
+  o.appendChild(b)});
+ $('#qs').appendChild(d)});
+</script></body></html>
