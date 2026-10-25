@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>原型小助手</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 70px}
+.wrap{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 4px;font-size:18px;color:var(--teal);display:flex;align-items:center;gap:10px}
+.card h2 i{font-style:normal;min-width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:15px}
+.card h2 .tag{font-size:12px;font-weight:700;color:var(--orange);background:var(--orsoft);border-radius:999px;padding:1px 10px;margin-left:auto}
+details.card>summary{list-style:none;cursor:pointer}
+details.card>summary::-webkit-details-marker{display:none}
+details.card[open]>summary{margin-bottom:8px}
+summary:focus-visible,.btn:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.hint{margin:0 0 8px;color:var(--muted);font-size:14px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:10px 0 4px;font-size:14px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea,input[type=text]{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:8px 12px;background:var(--bg);color:var(--ink)}
+textarea{min-height:70px;resize:vertical}
+textarea.pr{min-height:150px;background:#F6F9F8;font-size:14px}
+textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:9px 16px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:8px 0}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.note{font-size:13px;color:var(--muted)}
+.msg{font-size:14px;color:var(--teal);min-height:1.4em}
+.steps{display:flex;gap:6px;flex-wrap:wrap}
+.steps span{flex:1;min-width:120px;text-align:center;padding:6px 8px;border-radius:10px;background:var(--tealsoft);color:var(--teal);font-weight:700;font-size:14px}
+.warn{background:var(--orsoft);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--orange)}
+.phone{width:410px;max-width:100%;margin:10px auto 0;background:#24344D;border-radius:36px;padding:16px 14px}
+.phone iframe{display:block;width:100%;height:720px;border:0;border-radius:22px;background:#fff}
+.phone.empty iframe{display:none}
+.empty-tip{display:none;color:#fff;text-align:center;padding:60px 20px;font-size:14px}
+.phone.empty .empty-tip{display:block}
+[hidden]{display:none!important}
+</style></head><body>
+<div class="wrap">
+ <div><h1>原型小助手</h1><p class="sub">你只管写清自己的产品，提示词我帮你拼好。复制发给 AI（豆包、DeepSeek、Kimi 等都行），再回来看结果。写的内容只留在你的浏览器里，不会上传。</p></div>
+
+ <div class="card">
+  <h2><i>0</i>先写几句话<span class="tag">后面都用得上</span></h2>
+  <p class="hint">照着你平时作业写：旅程图里最低的一段，竞品分析里那句差异点。写短一点就行。</p>
+  <div class="row"><button class="btn alt" id="demo" type="button">看示例（校园拼单 App）</button><button class="btn alt" id="clr" type="button">清空</button></div>
+  <label class="f" for="dir">产品方向<small>你的作业要做什么产品</small></label><input type="text" id="dir" placeholder="例如：校园拼单App">
+  <label class="f" for="usr">目标用户</label><input type="text" id="usr" placeholder="例如：住校大学生">
+  <label class="f" for="pain">最痛的一段<small>旅程图里情绪最低的那一步</small></label><input type="text" id="pain" placeholder="例如：凑不够起送价，又要一个个去问同学">
+  <label class="f" for="diff">和竞品不一样的一点<small>竞品分析里的差异点</small></label><input type="text" id="diff" placeholder="例如：同楼同学自动匹配，发起只要三步">
+  <label class="f" for="task">今天只画这一条主任务<small>用户要完成的一件事</small></label><input type="text" id="task" placeholder="例如：用户发起一个拼单，等同学加入">
+  <p class="msg" id="m0"></p>
+ </div>
+
+ <details class="card" id="tA">
+  <summary><h2><i>A</i>五原则检查：一个 App 里的一个操作<span class="tag">第一次课</span></h2></summary>
+  <p class="hint">选你竞品 App 里的一个操作（比如发布、下单、删除），截一张图或把每一步写几句话，让 AI 按五条原则陪你检查。</p>
+  <div class="two"><div><label class="f" for="aApp">App 名</label><input type="text" id="aApp" placeholder="例如：闲鱼"></div><div><label class="f" for="aOp">要检查的操作</label><input type="text" id="aOp" placeholder="例如：发布一件闲置"></div></div>
+  <label class="f" for="aDesc">每一步看到什么、点哪里<small>有截图就一起发给 AI，这里可以写短一点</small></label><textarea id="aDesc" placeholder="1. 点底部中间的“发布”&#10;2. 选照片&#10;3. 填标题和价格&#10;4. 点“发布”，页面回到首页"></textarea>
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pA" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pA" type="button">复制提示词</button><span class="msg" data-msg="pA"></span></div>
+  <div class="warn">看 AI 的回答时，找出一条有用的建议，再找出一条没根据的（比如它说了截图里根本没有的东西）。AI 是评审陪练，不是真用户。</div>
+ </details>
+
+ <details class="card" id="tB">
+  <summary><h2><i>B</i>让 AI 出“摆放清单”，照着在 Axure 里搭<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">AI 逐页写出每个元件的类型、文字、位置和大小。你把 AI 的表格粘在下面，点“预览”先看一眼摆得对不对，再到 Axure 里照着输入数字。</p>
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pB" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pB" type="button">复制提示词</button><span class="msg" data-msg="pB"></span></div>
+  <label class="f" for="rB">把 AI 给的清单整段粘在这里<small>表格原样粘，不用改格式</small></label><textarea id="rB" style="min-height:170px;font-family:Consolas,monospace;font-size:13px" placeholder="### 首页&#10;| 序号 | 元件 | 文字 | X | Y | 宽 | 高 | 样式 | 点击后去 |&#10;|---|---|---|---|---|---|---|---|---|&#10;| 1 | 矩形 | — | 0 | 0 | 375 | 56 | 灰 | — |"></textarea>
+  <div class="row"><button class="btn or" id="lprev" type="button">预览清单</button><button class="btn alt" id="lex" type="button">看示例清单</button><button class="btn alt" id="lcc" type="button">清空</button><span class="msg" id="mL"></span></div>
+  <div id="ltabs" class="row"></div>
+  <div class="phone empty" id="lphone" style="width:330px;padding:12px"><div class="empty-tip">预览会出现在这里</div><div id="lcanvas" style="position:relative;background:#fff;margin:0 auto;display:none"></div></div>
+  <div class="warn" id="lwarn" style="display:none"></div>
+ </details>
+
+ <details class="card" id="tC">
+  <summary><h2><i>C</i>让 AI 写界面上的字<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">按钮写什么、空白页提示什么、出错了怎么说。让 AI 每处写三个，你来选最顺口的。</p>
+  <label class="f" for="cWhere">要写的位置<small>用顿号隔开</small></label><input type="text" id="cWhere" value="发起按钮、没有拼单时的空白提示、操作失败的提示、删除前的确认">
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pC" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pC" type="button">复制提示词</button><span class="msg" data-msg="pC"></span></div>
+ </details>
+
+ <details class="card" id="tD">
+  <summary><h2><i>D</i>一步生成能点的网页原型<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">让 AI 写出一段网页代码，粘到下面的框里，点“预览”，马上就能像手机一样点着玩。做得满意，可以直接“下载成 html 文件”，当作你的原型保存；也可以拿它和 Axure 里画的对照着改。</p>
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pD" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pD" type="button">复制提示词</button><span class="msg" data-msg="pD"></span></div>
+  <label class="f" for="code">把 AI 给的代码整段粘在这里<small>带不带 ``` 都可以</small></label><textarea id="code" style="min-height:120px;font-family:Consolas,monospace;font-size:13px" placeholder="<!doctype html> ……"></textarea>
+  <div class="row"><button class="btn or" id="prev" type="button">预览</button><button class="btn alt" id="dl" type="button">下载成 html 文件</button><button class="btn alt" id="ex" type="button">看示例</button><button class="btn alt" id="cc" type="button">清空</button><span class="msg" id="mD"></span></div>
+  <div class="phone empty" id="phone"><div class="empty-tip">预览会出现在这里</div><iframe id="fr" title="原型预览" sandbox="allow-scripts allow-forms"></iframe></div>
+ </details>
+
+ <details class="card" id="tE">
+  <summary><h2><i>E</i>让 AI 扮演第一次用的人，替你走一遍<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">真人试用最好，但你现在身边未必有人。先让 AI 当“第一次用的大学生”，你把页面内容给它，它会说每一步想点哪里、哪里看不懂。</p>
+  <label class="f" for="eDesc">你的页面和跳转<small>可以直接用上面 B 的结果，写短一点也行</small></label><textarea id="eDesc" placeholder="首页：两个按钮“发起拼单”“加入拼单”&#10;发起页：填商家、人数、时间，按钮“发出”……"></textarea>
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pE" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pE" type="button">复制提示词</button><span class="msg" data-msg="pE"></span></div>
+  <div class="warn">AI 走出来的“卡住点”是线索，不是结论。把你觉得有道理的挑出来改，后面有机会再找真人试试。</div>
+ </details>
+
+ <details class="card" id="tF">
+  <summary><h2><i>F</i>用五原则检查我的原型<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">改之前先让 AI 逐条检查一遍，再挑一条有道理的，改一处。</p>
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pF" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pF" type="button">复制提示词</button><span class="msg" data-msg="pF"></span></div>
+  <label class="f" for="rF">我决定改的一处<small>写清改哪个页面的哪个元件、为什么</small></label><textarea id="rF" placeholder="例如：确认页的“发出”按钮改成“确认发起”，因为用户不知道点了会不会马上生效（可预测性）"></textarea>
+ </details>
+
+ <details class="card" id="tG">
+  <summary><h2><i>G</i>让 AI 画一页界面效果图<span class="tag">第二次课</span></h2></summary>
+  <p class="hint">用豆包、即梦等能画图的 AI。一页一张，风格那句每次原样带上，几页才会一致。AI 画的图里，文字常常出错，文字后面在 Axure 里自己加。</p>
+  <label class="f" for="gPage">这一页叫什么，里面有什么<small>例：首页：顶部标题栏、一张图片位、一个大按钮“发起拼单”</small></label><input type="text" id="gPage" value="">
+  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pG" readonly></textarea>
+  <div class="row"><button class="btn" data-copy="pG" type="button">复制提示词</button><span class="msg" data-msg="pG"></span></div>
+  <div class="warn">这张图是参考和底图，不是能点的原型。要能点，把图放进 Axure，在按钮上加点击区域。</div>
+ </details>
+
+ <div class="card">
+  <h2><i>✓</i>保存起来</h2>
+  <p class="hint">复制全文，粘进你的文档里，保存好，作为平时作业的一部分，不用上传。</p>
+  <div class="row"><button class="btn" id="all" type="button">复制我的全部内容</button><span class="msg" id="mAll"></span></div>
+ </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),V=id=>($('#'+id).value||'').trim();
+const FIELDS=['dir','usr','pain','diff','task','aApp','aOp','aDesc','rB','cWhere','code','eDesc','rF','gPage'];
+const KEY='proto-helper-v1';
+function save(){try{const o={};FIELDS.forEach(i=>o[i]=$('#'+i).value);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+function load(){try{const o=JSON.parse(localStorage.getItem(KEY)||'{}');FIELDS.forEach(i=>{if(o[i]!=null&&o[i]!=='')$('#'+i).value=o[i]})}catch(e){}}
+const D=s=>s||'【待填】';
+function build(){
+ const prod=`产品方向：${D(V('dir'))}；目标用户：${D(V('usr'))}；用户最痛的一个环节：${D(V('pain'))}；和竞品不一样的一点：${D(V('diff'))}。`;
+ $('#pA').value=`我在学界面设计的五项原则：简单性、可见性、可记忆性、可预测性、安全性。请帮我检查一个App里的一个具体操作。
+App：${D(V('aApp'))}；操作：${D(V('aOp'))}。
+我会附上截图（没有截图就按我下面的文字描述）。每一步看到什么、点哪里：
+${D(V('aDesc'))}
+请按这五条原则，每条回答两点：①这个设计在这条原则上做得怎么样（好/一般/差，一句话理由）；②如果有问题，具体改哪一处。
+要求：只根据我给的截图和描述判断，看不出来的写“无法判断”，不要编造界面上没有的内容；每条不超过60字；最后用一句话指出最需要改的一条。`;
+ $('#pB').value=`我在用 Axure 画手机App的低保真原型。${prod}
+今天只做一条主任务：${D(V('task'))}。
+请为这条主任务设计 3 到 4 个页面，并只输出“摆放清单”，不要输出别的内容。先用一句话列出页面名，再逐页给出一张表，格式严格如下：
+### 页面名
+| 序号 | 元件 | 文字 | X | Y | 宽 | 高 | 样式 | 点击后去 |
+|---|---|---|---|---|---|---|---|---|
+规则：
+①画布 375×667，左上角是(0,0)，单位是像素，X、Y、宽、高都写整数；
+②“元件”只能从这几个里选：矩形、文本标签、按钮、图片占位、文本框、下拉列表、单选按钮、复选框、分割线；
+③每页不超过 10 个元件，按从上到下的顺序排；
+④顶部标题栏 Y=0、高 56；底部导航（如果有）Y=611、高 56；
+⑤左右留 16 的边距：内容 X 不小于 16，X+宽 不大于 359；
+⑥按钮高 44；上下两个元件之间至少留 12 的空隙；元件不要超出画布，也不要互相重叠（标题栏、导航的背景底板除外）；
+⑦“样式”只写：灰、白、强调色、描边 四选一；
+⑧“点击后去”写页面名，不跳转的写“—”；
+⑨页面里要体现“和竞品不一样的一点”。
+最后用一句话写出这条主任务的点击路线，例如：首页 → 发起 → 确认 → 完成。`;
+ $('#pC').value=`请为我的App原型写界面上的文字。${prod}
+需要写的位置：${D(V('cWhere'))}。
+每个位置给3个写法，从短到长；按钮和标签不超过8个字，提示语不超过20个字；语气友好、直接，不用术语；每个写法后面用一句话说适合什么情况。`;
+ $('#pD').value=`请帮我做一个可点击的手机App低保真原型。要求输出一个完整的单文件HTML：CSS和JS都写在同一个文件里，不要引用任何外部文件，也不要用外部图片。
+${prod}
+今天的主任务：${D(V('task'))}。
+页面清单与跳转：${V('rB')?'\n'+V('rB'):'请你自己定3到4个页面，并安排好跳转。'}
+设计要求：
+①屏幕宽375px、高700px左右，在网页中间显示，像一部手机；
+②低保真风格：只用灰白色加一个强调色，图片位置用灰色方块加一个叉表示；
+③页面之间用按钮或链接跳转（用JS切换显示哪个页面，不要刷新网页）；
+④按钮和文字用简短的中文；
+⑤至少做一个空白状态或出错提示的例子；
+⑥只输出代码，不要解释，用 \`\`\`html 把代码包起来。`;
+ $('#pG').value=`请画一张手机App的界面效果图，竖屏，手机比例。${prod}
+这一页：${D(V('gPage'))}。
+风格：低保真线框风格，灰白底，只用一个橙色做强调，简洁、留白多，像产品设计草图。
+要求：①只画这一页；②界面里的文字尽量少，用灰色横条代替文字，不要生成乱码；③元件位置清楚，按钮明显；④不要加手机外壳和背景装饰。`;
+ $('#pE').value=`请你扮演一个第一次使用这个App的大学生（${D(V('usr'))}），不要帮我，只管像真实用户那样想。
+下面是我的原型的页面和跳转：
+${D(V('eDesc')||V('rB'))}
+你要完成的任务：${D(V('task'))}。
+请一步一步走：每一步写“我看到了什么 → 我想点哪里 → 为什么 → 有没有犹豫或看不懂”。遇到看不懂、找不到、怕点错的地方，直接说出来。
+走完后，列出最多3个让你卡住的地方，并说明发生在第几步。
+注意：只根据我给的内容走，没写的页面或按钮视为不存在，不要自己补。`;
+ $('#pF').value=`请用五项原则（简单性、可见性、可记忆性、可预测性、安全性）检查我的原型。
+${prod}
+主任务：${D(V('task'))}。
+页面与跳转、每页内容：
+${D(V('rB')||V('eDesc'))}
+请按每条原则回答：这条原则下的问题（没有就写“没发现问题”）→ 具体改哪一处（说出页面和元件）。
+要求：每条不超过50字；只根据我给的内容，不要编造；最后给出“最值得先改的一处”。`;
+}
+function copyText(t,msg){
+ const ok=()=>{msg.textContent='已复制，去粘贴给 AI 吧';setTimeout(()=>msg.textContent='',2600)};
+ const fb=()=>{const a=document.createElement('textarea');a.value=t;a.style.position='fixed';a.style.opacity='0';document.body.appendChild(a);a.select();try{document.execCommand('copy');ok()}catch(e){msg.textContent='复制没成功，请手动选中复制'}document.body.removeChild(a)};
+ if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(t).then(ok,fb);else fb();
+}
+document.querySelectorAll('[data-copy]').forEach(b=>b.onclick=()=>{build();copyText($('#'+b.dataset.copy).value,document.querySelector(`[data-msg="${b.dataset.copy}"]`))});
+FIELDS.forEach(i=>$('#'+i).addEventListener('input',()=>{save();build()}));
+document.querySelectorAll('details.card').forEach(d=>d.addEventListener('toggle',build));
+const SAMPLE=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>
+*{box-sizing:border-box}body{margin:0;font-family:sans-serif;background:#eee;color:#333}
+.pg{display:none;height:700px;background:#fff;padding:0;position:relative}.pg.on{display:block}
+.top{background:#ddd;padding:16px;font-weight:bold;border-bottom:2px solid #bbb}
+.box{margin:16px;padding:16px;background:#eee;border:2px dashed #bbb;border-radius:8px}
+.img{height:90px;background:#ccc;margin:16px;position:relative}.img:before,.img:after{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px solid #eee}.img:before{transform:rotate(14deg)}.img:after{transform:rotate(-14deg)}
+button{display:block;width:calc(100% - 32px);margin:12px 16px;padding:14px;border:0;border-radius:10px;background:#B4572B;color:#fff;font-size:16px}
+button.g{background:#bbb;color:#333}input{display:block;width:calc(100% - 32px);margin:8px 16px;padding:12px;border:2px solid #bbb;border-radius:8px;font-size:15px}
+.tip{margin:16px;padding:12px;background:#fff3cd;border-radius:8px;font-size:14px}.ok{font-size:48px;text-align:center;margin-top:60px}
+</style></head><body>
+<div class="pg on" id="p1"><div class="top">校园拼单</div><div class="img"></div><div class="box">还没有人在拼单</div><button onclick="go('p2')">发起拼单</button><button class="g" onclick="go('p1')">加入拼单</button></div>
+<div class="pg" id="p2"><div class="top">‹ 发起拼单</div><input placeholder="想点哪家店"><input placeholder="几个人拼"><input placeholder="几点截止"><div class="tip">只要三步：选店、定人数、发出。</div><button onclick="go('p3')">发出</button><button class="g" onclick="go('p1')">取消</button></div>
+<div class="pg" id="p3"><div class="top">发起成功</div><div class="ok">✓</div><p style="text-align:center">已通知同楼同学<br>满员后自动下单</p><button onclick="go('p1')">回首页</button><button class="g" onclick="go('p2')">撤回这次拼单</button></div>
+<script>function go(i){document.querySelectorAll('.pg').forEach(e=>e.classList.remove('on'));document.getElementById(i).classList.add('on')}<\/script></body></html>`;
+function extract(t){const m=t.match(/\`\`\`(?:html)?\s*([\s\S]*?)\`\`\`/);return (m?m[1]:t).trim()}
+function preview(){const c=extract($('#code').value);if(!c){$('#mD').textContent='先把代码粘进上面的框';return}
+ $('#phone').classList.remove('empty');$('#fr').srcdoc=c;$('#mD').textContent='可以点着试了；不对劲就让 AI 改，再粘回来'}
+$('#prev').onclick=preview;
+$('#ex').onclick=()=>{$('#code').value=SAMPLE;save();preview()};
+$('#cc').onclick=()=>{$('#code').value='';$('#phone').classList.add('empty');$('#fr').srcdoc='';save()};
+$('#dl').onclick=()=>{const c=extract($('#code').value);if(!c){$('#mD').textContent='还没有代码可下载';return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'text/html'}));a.download='我的原型.html';document.body.appendChild(a);a.click();document.body.removeChild(a);$('#mD').textContent='已下载，双击就能用浏览器打开'};
+const SAMPLE_LIST=`### 首页
+| 序号 | 元件 | 文字 | X | Y | 宽 | 高 | 样式 | 点击后去 |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 矩形 | — | 0 | 0 | 375 | 56 | 灰 | — |
+| 2 | 文本标签 | 校园拼单 | 16 | 14 | 200 | 28 | 白 | — |
+| 3 | 图片占位 | 正在拼的单 | 16 | 72 | 343 | 160 | 灰 | — |
+| 4 | 文本标签 | 还没有人在拼单 | 16 | 246 | 343 | 28 | 白 | — |
+| 5 | 按钮 | 发起拼单 | 16 | 290 | 343 | 44 | 强调色 | 发起 |
+| 6 | 按钮 | 加入拼单 | 16 | 346 | 343 | 44 | 描边 | — |
+### 发起
+| 序号 | 元件 | 文字 | X | Y | 宽 | 高 | 样式 | 点击后去 |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 矩形 | — | 0 | 0 | 375 | 56 | 灰 | — |
+| 2 | 文本标签 | 发起拼单 | 16 | 14 | 200 | 28 | 白 | 首页 |
+| 3 | 文本框 | 想点哪家店 | 16 | 80 | 343 | 44 | 描边 | — |
+| 4 | 文本框 | 几个人拼 | 16 | 136 | 343 | 44 | 描边 | — |
+| 5 | 文本框 | 几点截止 | 16 | 192 | 343 | 44 | 描边 | — |
+| 6 | 按钮 | 发出 | 16 | 260 | 343 | 44 | 强调色 | 首页 |`;
+function parseList(txt){const pages=[];let cur=null;
+ txt.split(/\r?\n/).forEach(line=>{const l=line.trim();if(!l)return;
+  if(l.indexOf('|')<0){const m=l.match(/^(?:#+\s*|页面[:：]\s*)(.+)$/);if(m){cur={name:m[1].replace(/[*：:]/g,'').trim(),rows:[]};pages.push(cur)}return}
+  const c=l.split('|').map(s=>s.trim());if(c[0]==='')c.shift();if(c.length&&c[c.length-1]==='')c.pop();
+  if(c.length<7)return;const n=[3,4,5,6].map(i=>parseInt(c[i],10));if(n.some(isNaN))return;
+  if(!cur){cur={name:'页面',rows:[]};pages.push(cur)}
+  cur.rows.push({no:c[0],type:c[1],text:c[2],x:n[0],y:n[1],w:n[2],h:n[3],style:c[7]||'',go:c[8]||''})});
+ return pages}
+let LP=[],LI=0;
+function drawPage(i){LI=i;const p=LP[i],cv=$('#lcanvas'),W=375,H=667,k=300/W;cv.style.width=(W*k)+'px';cv.style.height=(H*k)+'px';cv.innerHTML='';
+ const warns=[];
+ p.rows.forEach(r=>{const d=document.createElement('div');const bad=r.x<0||r.y<0||r.x+r.w>W||r.y+r.h>H;if(bad)warns.push('“'+r.text+'”（序号'+r.no+'）超出了画布');
+  let bg='#fff',bd='1px solid #bbb',col='#404040';
+  if(/图片/.test(r.type)){bg='#ddd'}else if(r.style==='强调色'){bg='#B4572B';bd='1px solid #B4572B';col='#fff'}else if(r.style==='灰'){bg='#e6e6e6'}else if(r.style==='描边'){bg='#fff';bd='1.5px solid #888'}
+  if(/文本标签/.test(r.type)){bd='1px dashed #ccc';bg='transparent'}
+  if(bad){bd='2px solid #d00'}
+  d.style.cssText=`position:absolute;left:${r.x*k}px;top:${r.y*k}px;width:${r.w*k}px;height:${r.h*k}px;background:${bg};border:${bd};color:${col};font-size:11px;display:flex;align-items:center;justify-content:center;overflow:hidden;box-sizing:border-box;border-radius:${/按钮/.test(r.type)?6:2}px`;
+  d.textContent=/图片/.test(r.type)?'× '+(r.text||''):(r.text==='—'?'':r.text);d.title=r.type+' '+r.x+','+r.y+' '+r.w+'×'+r.h;cv.appendChild(d)});
+ const w=$('#lwarn');if(warns.length){w.style.display='block';w.textContent='这一页有问题：'+warns.join('；')+'。回去让 AI 改一下位置或大小。'}else{w.style.display='block';w.textContent='这一页的元件都在画布里。到 Axure 里，选中元件，在右边“样式”里输入 X、Y、宽、高。';}
+ document.querySelectorAll('#ltabs .btn').forEach((b,j)=>b.className='btn '+(j===i?'':'alt'))}
+function lpreview(){LP=parseList($('#rB').value);const m=$('#mL');
+ if(!LP.length||!LP.some(p=>p.rows.length)){m.textContent='没有认出表格：把 AI 给的表格整段粘进来（有 | 的那种）';return}
+ LP=LP.filter(p=>p.rows.length);$('#lphone').classList.remove('empty');$('#lcanvas').style.display='block';
+ const tb=$('#ltabs');tb.innerHTML='';LP.forEach((p,i)=>{const b=document.createElement('button');b.type='button';b.className='btn alt';b.textContent=p.name;b.onclick=()=>drawPage(i);tb.appendChild(b)});
+ drawPage(0);m.textContent='共 '+LP.length+' 页，点上面的页面名切换'}
+$('#lprev').onclick=lpreview;
+$('#lex').onclick=()=>{$('#rB').value=SAMPLE_LIST;save();lpreview()};
+$('#lcc').onclick=()=>{$('#rB').value='';$('#lphone').classList.add('empty');$('#lcanvas').style.display='none';$('#ltabs').innerHTML='';$('#lwarn').style.display='none';$('#mL').textContent='';save()};
+const DEMO={dir:'校园拼单App',usr:'住校大学生',pain:'点外卖凑不够起送价，又要一个个去问同学',diff:'同楼同学自动匹配，发起只要三步',task:'用户发起一个拼单，等同学加入',aApp:'闲鱼',aOp:'发布一件闲置',aDesc:'1. 点底部中间的“发布”\n2. 选照片\n3. 填标题和价格\n4. 点“发布”，页面回到首页'};
+$('#demo').onclick=()=>{Object.entries(DEMO).forEach(([k,v])=>$('#'+k).value=v);save();build();$('#m0').textContent='已填入示例，你可以直接改成自己的'};
+$('#clr').onclick=()=>{FIELDS.forEach(i=>{if(i!=='cWhere')$('#'+i).value=''});$('#phone').classList.add('empty');save();build();$('#m0').textContent='已清空'};
+$('#all').onclick=()=>{build();const t=`【我的原型】\n${['产品方向：'+V('dir'),'目标用户：'+V('usr'),'最痛的一段：'+V('pain'),'差异点：'+V('diff'),'主任务：'+V('task')].join('\n')}\n\n【页面清单与元件】\n${V('rB')}\n\n【我决定改的一处】\n${V('rF')}\n\n【检查过的App操作】\n${V('aApp')} ${V('aOp')}`;copyText(t,$('#mAll'))};
+load();build();
+</script></body></html>
