@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>场景四格小教练</title>
+<style>
+:root{--bg:#FFFAF0;--card:#fff;--line:#E3DCCB;--ink:#404040;--muted:#7F7F7F;--teal:#165E5D;--teal2:#2E7D78;--tealsoft:#E4F0EC;--orange:#B4572B;--orsoft:#FBE9DC;--red:#C0392B;--redsoft:#FBE3E0;--green:#2E8B57;--greensoft:#E1F3E8}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",sans-serif;line-height:1.65;font-size:15px;padding:18px 16px 60px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+h1{margin:0;font-size:24px;color:var(--teal)}
+.sub{margin:2px 0 0;color:var(--muted);font-size:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.card h2{margin:0 0 6px;font-size:18px;color:var(--teal)}
+.steps{display:flex;gap:8px;flex-wrap:wrap}
+.step{flex:1;min-width:120px;text-align:center;padding:8px 10px;border-radius:12px;background:var(--card);border:2px solid var(--line);font-weight:700;color:var(--muted);font-size:14px}
+.step.on{border-color:var(--orange);color:var(--orange);background:var(--orsoft)}
+.step.done{border-color:var(--teal2);color:var(--teal2)}
+.btn{font:inherit;font-weight:700;border:0;border-radius:12px;padding:10px 18px;cursor:pointer;background:var(--teal);color:#fff}
+.btn.alt{background:var(--card);color:var(--teal);border:2px solid var(--teal)}
+.btn.or{background:var(--orange)}
+.btn:focus-visible,textarea:focus-visible,.opt:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.sent{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:10px 12px;margin:10px 0}
+.sent.ok{border-color:var(--green);background:var(--greensoft)}
+.sent.no{border-color:var(--red);background:var(--redsoft);animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.sent p{margin:0 0 8px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{font:inherit;font-weight:700;border:2px solid var(--teal2);background:var(--card);color:var(--teal);border-radius:10px;padding:5px 14px;cursor:pointer;min-width:44px}
+.opt.nope{border-color:var(--muted);color:var(--muted)}
+.opt[disabled]{opacity:.5;cursor:default}
+.fb{font-size:14px;margin-top:6px}
+.fb.good{color:var(--green)} .fb.bad{color:var(--red)}
+.badge{display:inline-block;background:var(--teal);color:#fff;border-radius:8px;padding:0 9px;font-weight:700;margin-right:6px}
+label.f{display:block;font-weight:700;color:var(--teal);margin:12px 0 4px}
+label.f small{font-weight:400;color:var(--muted);margin-left:6px}
+textarea{width:100%;font:inherit;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--bg);color:var(--ink);min-height:74px;resize:vertical}
+textarea:focus{border-color:var(--teal2)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.chip{font-size:13px;border-radius:999px;padding:1px 10px;background:var(--line);color:var(--muted)}
+.chip.ok{background:var(--greensoft);color:var(--green)}
+.chip.warn{background:var(--orsoft);color:var(--orange)}
+.out{display:flex;flex-direction:column;gap:10px}
+.starcard{background:#fff;border:3px solid var(--teal);border-radius:18px;padding:14px}
+.sr{display:flex;gap:10px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.sr:last-child{border-bottom:0}
+.sr b{flex:0 0 34px;height:34px;border-radius:50%;background:var(--teal);color:#fff;display:grid;place-items:center}
+.sr div{min-width:0;word-break:break-all}
+.sr small{display:block;color:var(--muted)}
+.pic{max-width:100%;border:1px solid var(--line);border-radius:12px;display:block}
+.note{font-size:13px;color:var(--muted)}
+mark{background:#FFE08A;border-radius:4px}
+[hidden]{display:none!important}
+
+.tabs{display:flex;gap:8px;margin:6px 0 2px}
+.tab{font:inherit;font-weight:700;border:2px solid var(--line);background:var(--card);color:var(--muted);border-radius:12px;padding:6px 16px;cursor:pointer}
+.tab.on{border-color:var(--orange);color:var(--orange);background:var(--orsoft)}
+.tip{background:var(--tealsoft);border-radius:12px;padding:8px 12px;font-size:14px;margin:8px 0}
+</style></head><body>
+<div class="wrap">
+ <div><h1>场景四格小教练</h1><p class="sub">用 PSPS 四格，写出你画像人物的场景。写的时候，这里会提醒你缺了什么。写完复制保存，或存成图片。</p></div>
+
+ <div class="card">
+  <h2>第一步：写场景（最多写三个）</h2>
+  <div class="tabs" id="tabs"></div>
+  <div class="row" style="margin-top:8px"><button class="btn alt" id="demo" type="button">看示例（小李约饭）</button><button class="btn alt" id="clr" type="button">清空这一个</button></div>
+  <label class="f" for="fp">人物<small>一句话：他是谁 + 一个特点</small></label><textarea id="fp" style="min-height:58px"></textarea><div class="chips" id="cp"></div>
+  <label class="f" for="fs">场景<small>什么时候、在哪、正在做什么。只写他已经在做的事，别写产品</small></label><textarea id="fs"></textarea><div class="chips" id="cs"></div>
+  <label class="f" for="ft">痛点<small>他卡在哪一步？为什么？</small></label><textarea id="ft"></textarea><div class="chips" id="ct"></div>
+  <label class="f" for="fo">解决方案<small>最后再写，一句话，对应上面这一个痛点</small></label><textarea id="fo" style="min-height:58px"></textarea><div class="chips" id="co"></div>
+  <div class="row" style="margin-top:14px"><button class="btn or" id="cpy" type="button">复制这一个</button><button class="btn alt" id="call" type="button">复制全部场景</button><button class="btn alt" id="cai" type="button">复制给 AI 核查</button><button class="btn alt" id="save" type="button">保存成图片</button></div>
+  <div class="note" id="msg" role="status" style="margin-top:8px"></div>
+  <img id="pic" class="pic" alt="我的场景图片" hidden style="margin-top:8px">
+  <div class="note" style="margin-top:8px">写完点“复制”，粘到备忘录里保存好，作为平时作业的一部分。图片出现后长按保存（电脑右键另存为）。“复制给 AI 核查”会带上提示词，粘到豆包、DeepSeek、Kimi 等。</div>
+ </div>
+
+ <div class="card">
+  <h2>第二步（回去做）：选一个，写成四句话小故事</h2>
+  <div class="tip">选三个场景里最想讲的一个。点“用这个场景起草”，页面先帮你搭好四句，你再改成自己的话。</div>
+  <div class="row"><select id="pick" class="opt" style="font:inherit"></select><button class="btn alt" id="draft" type="button">用这个场景起草</button></div>
+  <label class="f" for="ss">S　情景<small>大家都知道的背景，别写产品</small></label><textarea id="ss" style="min-height:58px"></textarea><div class="chips" id="cS"></div>
+  <label class="f" for="sc">C　冲突<small>出现了什么麻烦</small></label><textarea id="sc" style="min-height:58px"></textarea><div class="chips" id="cC"></div>
+  <label class="f" for="sq">Q　问题<small>用一个问句：该怎么办？</small></label><textarea id="sq" style="min-height:58px"></textarea><div class="chips" id="cQ"></div>
+  <label class="f" for="sa">A　回答<small>你的方案，最后才出现</small></label><textarea id="sa" style="min-height:58px"></textarea><div class="chips" id="cA"></div>
+  <div class="row" style="margin-top:14px"><button class="btn or" id="cps" type="button">复制小故事</button></div>
+ </div>
+</div>
+<script>
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const KEY='ux_ch4_psps_v1';
+let D={cur:0,sc:[{},{},{}]};
+try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.sc&&o.sc.length===3)D=o}}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
+const F={p:$('#fp'),s:$('#fs'),t:$('#ft'),o:$('#fo')},K=['p','s','t','o'];
+const ST={s:$('#ss'),c:$('#sc'),q:$('#sq'),a:$('#sa')};
+function chip(el,items){$(el).innerHTML=items.filter(x=>x[1]).map(([c,t])=>`<span class="chip ${c}">${esc(t)}</span>`).join('')}
+const PROD=/(App|APP|app|小程序|功能|一键|平台|软件|产品|系统|扫码|网站|页面)/;
+const TIME=/(周[一二三四五六日天]|星期|早上|早晨|上午|中午|下午|傍晚|晚上|夜里|半夜|凌晨|周末|课间|下课|放学|\d+\s*[点:：时]|[一二三四五六七八九十]点)/;
+const PLACE=/(宿舍|食堂|图书馆|教学楼|教室|地铁|公交|路上|校门|操场|楼下|店|家|公司|商场|医院|车站|机场|校园|办公室|实验室|电梯|超市|快递站|咖啡)/;
+const PAIN=/(但|可是|却|不好意思|怕|担心|找不到|不知道|没有|不会|太|麻烦|等了|等不到|慢|看不懂|卡|不敢|没人|错过|来不及|不清楚|不确定|翻)/;
+const VAGUE=/(不方便|不好用|体验差|很麻烦|不流畅|不友好)/;
+function tabs(){
+  $('#tabs').innerHTML=[0,1,2].map(i=>`<button type="button" class="tab ${i===D.cur?'on':''}" data-i="${i}">场景${i+1}${(D.sc[i].p||D.sc[i].s||D.sc[i].t)?' ✓':''}</button>`).join('');
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{D.cur=+b.dataset.i;load();});
+  const keep=$('#pick').value;
+  $('#pick').innerHTML=[0,1,2].map(i=>`<option value="${i}">场景${i+1}${D.sc[i].s?'：'+esc(D.sc[i].s.slice(0,14)):''}</option>`).join('');
+  if(keep)$('#pick').value=keep;
+}
+function load(){const c=D.sc[D.cur];K.forEach(k=>F[k].value=c[k]||'');tabs();check();}
+function check(){
+  const c=D.sc[D.cur];K.forEach(k=>c[k]=F[k].value.trim());save();
+  const p=c.p,s=c.s,t=c.t,o=c.o,m=s.match(PROD);
+  chip('#cp',[p.length>=8?['ok','够具体了']:['','再补一点：他是谁？有什么特点？']]);
+  chip('#cs',[TIME.test(s)?['ok','有时间']:['','缺时间：几点？星期几？'],(PLACE.test(s)||/在/.test(s))?['ok','有地点']:['','缺地点：他在哪？'],m?['warn',`出现了“${m[0]}”：场景只写他已经在做的事，产品挪到最后一格`]:(s.length>=12?['ok','没有写进产品']:['','写他正在做什么'])]);
+  chip('#ct',[t.length>=12?['ok','写得不短']:['','再具体：卡在哪一步？为什么？'],PAIN.test(t)?['ok','看得出“卡住”']:['','写出“想…但是…”的那个转折'],VAGUE.test(t)?['warn','“不方便、不好用”太笼统：具体到哪一步？']:['','']]);
+  chip('#co',[o?(o.length<=60?['ok','一句话，很好']:['warn','太长了：一句话说清']):['','可以先空着，写完前三格再写']]);
+  chip('#cS',[PROD.test(ST.s.value)?['warn','情景里别出现产品']:(ST.s.value.trim().length>=10?['ok','背景交代了']:['','写大家都知道的背景'])]);
+  chip('#cC',[PAIN.test(ST.c.value)?['ok','有麻烦']:['','写出出现了什么麻烦']]);
+  chip('#cQ',[/[？?]/.test(ST.q.value)?['ok','是个问句']:['','用问句结尾：该怎么办？']]);
+  chip('#cA',[ST.a.value.trim()?['ok','写了方案']:['','最后才写方案']]);
+}
+K.forEach(k=>F[k].addEventListener('input',()=>{check();tabs();}));
+Object.values(ST).forEach(e=>e.addEventListener('input',check));
+$('#demo').onclick=()=>{F.p.value='小李，大一新生，入学一个月，班里只认识室友。';F.s.value='周三中午12点，小李下课走到教学楼下，想找人一起吃饭。';F.t.value='他想在班群里问一句，又怕没人回、显得尴尬，站了几分钟，最后一个人去了食堂。';F.o.value='一键发出“今天想找人吃饭”，同楼栋的同学点一下就能响应，不用在群里开口。';check();tabs();};
+$('#clr').onclick=()=>{K.forEach(k=>F[k].value='');check();tabs();};
+function one(c,i){return `场景${i+1}\n人物：${c.p||'【……】'}\n场景：${c.s||'【……】'}\n痛点：${c.t||'【……】'}\n解决方案：${c.o||'【……】'}`}
+async function copy(t,ok){try{await navigator.clipboard.writeText(t);$('#msg').textContent=ok}catch(e){const ta=document.createElement('textarea');ta.value=t;document.body.appendChild(ta);ta.select();let g=false;try{g=document.execCommand('copy')}catch(x){}document.body.removeChild(ta);$('#msg').textContent=g?ok:'复制没成功：请手动选中文字复制。'}}
+$('#cpy').onclick=()=>copy(one(D.sc[D.cur],D.cur),'已复制这一个场景。');
+$('#call').onclick=()=>copy(D.sc.map(one).join('\n\n'),'已复制全部场景。');
+$('#cai').onclick=()=>copy(`这是我写的一个用户场景，用的是PSPS四格。请只使用我写的内容，不要编造：\n${one(D.sc[D.cur],D.cur)}\n请你只检查这四点，每点回答“通过”或“要改”，要改的写一句怎么改，不要替我重写整段：\n1. 场景里有没有写进产品或方案？（场景只能写他已经在做的事）\n2. 场景有没有时间、地点和他正在做的事？\n3. 痛点是不是具体到某一步（谁、卡在哪、为什么）？\n4. 解决方案是不是只对应这一个痛点？\n最后用一句话告诉我：读完这个场景，脑子里能出现画面吗？`,'已复制，粘到AI发送就行。');
+function wrap(s,n){const out=[];String(s).split('\n').forEach(line=>{let cur='',w=0;for(const ch of line){const cw=/[\u0000-ÿ]/.test(ch)?.55:1;if(w+cw>n){out.push(cur);cur='';w=0}cur+=ch;w+=cw}out.push(cur)});return out}
+$('#save').onclick=()=>{
+  const c=D.sc[D.cur],W=900,P=40,rows=[['人','人物',c.p],['场','场景',c.s],['痛','痛点',c.t],['方','解决方案',c.o]];
+  let y=150,g='';
+  rows.forEach(([k,n,x])=>{const ls=wrap(x||'（还没写）',23);const h=Math.max(70,ls.length*38+48);
+    g+=`<circle cx="${P+30}" cy="${y+30}" r="30" fill="#165E5D"/><text x="${P+30}" y="${y+41}" font-size="30" font-weight="700" fill="#fff" text-anchor="middle">${k}</text><text x="${P+90}" y="${y+22}" font-size="22" fill="#7F7F7F">${n}</text>`+ls.map((l,i)=>`<text x="${P+90}" y="${y+56+i*38}" font-size="28" fill="#404040">${esc(l)}</text>`).join('')+`<line x1="${P}" x2="${W-P}" y1="${y+h-6}" y2="${y+h-6}" stroke="#E3DCCB" stroke-dasharray="6 6"/>`;y+=h+14;});
+  const H=y+30;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" font-family="Microsoft YaHei,PingFang SC,sans-serif"><rect width="${W}" height="${H}" fill="#FFFAF0"/><rect x="12" y="12" width="${W-24}" height="${H-24}" rx="24" fill="none" stroke="#165E5D" stroke-width="4"/><text x="${P}" y="80" font-size="40" font-weight="700" fill="#165E5D">我的场景 ${D.cur+1}</text><text x="${P}" y="118" font-size="22" fill="#7F7F7F">人物 · 场景 · 痛点 · 方案</text>${g}</svg>`;
+  const img=new Image();
+  img.onload=()=>{try{const cv=document.createElement('canvas');cv.width=W*2;cv.height=H*2;const x=cv.getContext('2d');x.scale(2,2);x.drawImage(img,0,0);$('#pic').src=cv.toDataURL('image/png');$('#pic').hidden=false;$('#msg').textContent='图片出来了，长按保存。'}catch(e){$('#msg').textContent='保存图片失败，请直接截图。'}};
+  img.onerror=()=>{$('#msg').textContent='保存图片失败，请直接截图这张卡。'};
+  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg);
+};
+$('#draft').onclick=()=>{const c=D.sc[+$('#pick').value]||{};
+  ST.s.value=c.p?c.p.replace(/[。.]$/,'')+'。':'';
+  ST.c.value=[c.s,c.t].filter(Boolean).join('');
+  ST.q.value=c.t?'有没有办法，让他不用再这样卡住？':'';
+  ST.a.value=c.o||'';check();$('#msg').textContent='草稿搭好了，把它改成你自己的话：情景别写产品，方案放最后。'};
+$('#cps').onclick=()=>copy(`S 情景：${ST.s.value.trim()||'【……】'}\nC 冲突：${ST.c.value.trim()||'【……】'}\nQ 问题：${ST.q.value.trim()||'【……】'}\nA 回答：${ST.a.value.trim()||'【……】'}`,'已复制小故事。');
+load();
+</script></body></html>

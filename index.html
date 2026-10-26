@@ -1278,7 +1278,7 @@ module.exports = QRCode;
 window.QR={QRCode:req('index'),EC:req('QRErrorCorrectLevel')};})();
 </script>
 <script>
-const PAGES=[['ch4/scene.html','第四章 画像人物的一天 + 场景盲盒','第四章第23、27页用'],['ch4/star.html','第四章 STAR小教练','第四章第20页用，帮你填STAR四格'],['ch5/moments.html','第五章 数一数：发一条动态','第五章第12页用'],['ch5/game.html','第五章 情绪过山车侦探','第五章第27页用'],['ch5/curve.html','第五章 画出情绪曲线','第五章第29页用，做“我的旅程图”'],['ch6/layers.html','五要素小测','竞品分析课：这一条属于哪一层'],['ch6/swot.html','SWOT小练习','竞品分析课：分析自己、分析自己的产品'],['ch6/compete.html','竞品分析小助手','竞品分析课动手做用：AI找竞品、五要素对比、SWOT'],['ch7/proto.html','第七章 原型小助手','原型设计课：AI检查五原则、摆放清单、改文字、写网页原型、画图提示词']];
+const PAGES=[['ch4/psps.html','第四章 场景四格小教练','第四章第10页用，写你的第一个场景'],['ch4/scene.html','第四章 画像人物的一天 + 场景盲盒','第四章第17、21页用'],['ch4/star.html','第四章 STAR小教练','第四章第36页用（选学），帮你填STAR四格'],['ch5/moments.html','第五章 数一数：发一条动态','第五章第12页用'],['ch5/game.html','第五章 情绪过山车侦探','第五章第27页用'],['ch5/curve.html','第五章 画出情绪曲线','第五章第29页用，做“我的旅程图”'],['ch6/layers.html','五要素小测','竞品分析课：这一条属于哪一层'],['ch6/swot.html','SWOT小练习','竞品分析课：分析自己、分析自己的产品'],['ch6/compete.html','竞品分析小助手','竞品分析课动手做用：AI找竞品、五要素对比、SWOT'],['ch7/proto.html','第七章 原型小助手','原型设计课：AI检查五原则、摆放清单、改文字、写网页原型、画图提示词']];
 function qr(url,el){const q=new QR.QRCode(-1,QR.EC.M);q.addData(url);q.make();const n=q.getModuleCount(),s=8,b=3,c=document.createElement('canvas');c.width=c.height=(n+2*b)*s;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.fillStyle='#165E5D';for(let r=0;r<n;r++)for(let k=0;k<n;k++)if(q.isDark(r,k))x.fillRect((k+b)*s,(r+b)*s,s,s);el.appendChild(c)}
 const base=location.href.replace(/[#?].*$/,'').replace(/[^\/]*$/,'');
 document.getElementById('addr').textContent=base.replace(/^https?:\/\//,'');
