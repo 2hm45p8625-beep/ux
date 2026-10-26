@@ -46,7 +46,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
 
  <div class="card">
   <h2><i>0</i>先写几句话<span class="tag">后面都用得上</span></h2>
-  <p class="hint">照着你平时作业写：旅程图里最低的一段，竞品分析里那句差异点。写短一点就行。</p>
+  <p class="hint">照着你平时作业写：旅程图里最低的一段，竞品分析里那句差异点。没有也行，直接写你想做的产品。写短一点就行。</p>
   <div class="row"><button class="btn alt" id="demo" type="button">看示例（校园拼单 App）</button><button class="btn alt" id="clr" type="button">清空</button></div>
   <label class="f" for="dir">产品方向<small>你的作业要做什么产品</small></label><input type="text" id="dir" placeholder="例如：校园拼单App">
   <label class="f" for="usr">目标用户</label><input type="text" id="usr" placeholder="例如：住校大学生">
@@ -56,18 +56,8 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
   <p class="msg" id="m0"></p>
  </div>
 
- <details class="card" id="tA">
-  <summary><h2><i>A</i>五原则检查：一个 App 里的一个操作<span class="tag">第一次课</span></h2></summary>
-  <p class="hint">选你竞品 App 里的一个操作（比如发布、下单、删除），截一张图或把每一步写几句话，让 AI 按五条原则陪你检查。</p>
-  <div class="two"><div><label class="f" for="aApp">App 名</label><input type="text" id="aApp" placeholder="例如：闲鱼"></div><div><label class="f" for="aOp">要检查的操作</label><input type="text" id="aOp" placeholder="例如：发布一件闲置"></div></div>
-  <label class="f" for="aDesc">每一步看到什么、点哪里<small>有截图就一起发给 AI，这里可以写短一点</small></label><textarea id="aDesc" placeholder="1. 点底部中间的“发布”&#10;2. 选照片&#10;3. 填标题和价格&#10;4. 点“发布”，页面回到首页"></textarea>
-  <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pA" readonly></textarea>
-  <div class="row"><button class="btn" data-copy="pA" type="button">复制提示词</button><span class="msg" data-msg="pA"></span></div>
-  <div class="warn">看 AI 的回答时，找出一条有用的建议，再找出一条没根据的（比如它说了截图里根本没有的东西）。AI 是评审陪练，不是真用户。</div>
- </details>
-
  <details class="card" id="tB">
-  <summary><h2><i>B</i>让 AI 出“摆放清单”，照着在 Axure 里搭<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>B</i>让 AI 出“摆放清单”，照着在 Axure 里搭<span class="tag">实践</span></h2></summary>
   <p class="hint">AI 逐页写出每个元件的类型、文字、位置和大小。你把 AI 的表格粘在下面，点“预览”先看一眼摆得对不对，再到 Axure 里照着输入数字。</p>
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pB" readonly></textarea>
   <div class="row"><button class="btn" data-copy="pB" type="button">复制提示词</button><span class="msg" data-msg="pB"></span></div>
@@ -79,7 +69,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
  </details>
 
  <details class="card" id="tC">
-  <summary><h2><i>C</i>让 AI 写界面上的字<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>C</i>让 AI 写界面上的字<span class="tag">实践</span></h2></summary>
   <p class="hint">按钮写什么、空白页提示什么、出错了怎么说。让 AI 每处写三个，你来选最顺口的。</p>
   <label class="f" for="cWhere">要写的位置<small>用顿号隔开</small></label><input type="text" id="cWhere" value="发起按钮、没有拼单时的空白提示、操作失败的提示、删除前的确认">
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pC" readonly></textarea>
@@ -87,7 +77,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
  </details>
 
  <details class="card" id="tD">
-  <summary><h2><i>D</i>一步生成能点的网页原型<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>D</i>一步生成能点的网页原型<span class="tag">实践</span></h2></summary>
   <p class="hint">让 AI 写出一段网页代码，粘到下面的框里，点“预览”，马上就能像手机一样点着玩。做得满意，可以直接“下载成 html 文件”，当作你的原型保存；也可以拿它和 Axure 里画的对照着改。</p>
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pD" readonly></textarea>
   <div class="row"><button class="btn" data-copy="pD" type="button">复制提示词</button><span class="msg" data-msg="pD"></span></div>
@@ -97,7 +87,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
  </details>
 
  <details class="card" id="tE">
-  <summary><h2><i>E</i>让 AI 扮演第一次用的人，替你走一遍<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>E</i>让 AI 扮演第一次用的人，替你走一遍<span class="tag">实践</span></h2></summary>
   <p class="hint">真人试用最好，但你现在身边未必有人。先让 AI 当“第一次用的大学生”，你把页面内容给它，它会说每一步想点哪里、哪里看不懂。</p>
   <label class="f" for="eDesc">你的页面和跳转<small>可以直接用上面 B 的结果，写短一点也行</small></label><textarea id="eDesc" placeholder="首页：两个按钮“发起拼单”“加入拼单”&#10;发起页：填商家、人数、时间，按钮“发出”……"></textarea>
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pE" readonly></textarea>
@@ -106,7 +96,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
  </details>
 
  <details class="card" id="tF">
-  <summary><h2><i>F</i>用五原则检查我的原型<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>F</i>用五原则检查我的原型<span class="tag">实践</span></h2></summary>
   <p class="hint">改之前先让 AI 逐条检查一遍，再挑一条有道理的，改一处。</p>
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pF" readonly></textarea>
   <div class="row"><button class="btn" data-copy="pF" type="button">复制提示词</button><span class="msg" data-msg="pF"></span></div>
@@ -114,7 +104,7 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
  </details>
 
  <details class="card" id="tG">
-  <summary><h2><i>G</i>让 AI 画一页界面效果图<span class="tag">第二次课</span></h2></summary>
+  <summary><h2><i>G</i>让 AI 画一页界面效果图<span class="tag">实践</span></h2></summary>
   <p class="hint">用豆包、即梦等能画图的 AI。一页一张，风格那句每次原样带上，几页才会一致。AI 画的图里，文字常常出错，文字后面在 Axure 里自己加。</p>
   <label class="f" for="gPage">这一页叫什么，里面有什么<small>例：首页：顶部标题栏、一张图片位、一个大按钮“发起拼单”</small></label><input type="text" id="gPage" value="">
   <label class="f">提示词（点下面的按钮复制）</label><textarea class="pr" id="pG" readonly></textarea>
@@ -130,19 +120,13 @@ textarea:focus,input:focus{outline:none;border-color:var(--teal2)}
 </div>
 <script>
 const $=s=>document.querySelector(s),V=id=>($('#'+id).value||'').trim();
-const FIELDS=['dir','usr','pain','diff','task','aApp','aOp','aDesc','rB','cWhere','code','eDesc','rF','gPage'];
+const FIELDS=['dir','usr','pain','diff','task','rB','cWhere','code','eDesc','rF','gPage'];
 const KEY='proto-helper-v1';
 function save(){try{const o={};FIELDS.forEach(i=>o[i]=$('#'+i).value);localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 function load(){try{const o=JSON.parse(localStorage.getItem(KEY)||'{}');FIELDS.forEach(i=>{if(o[i]!=null&&o[i]!=='')$('#'+i).value=o[i]})}catch(e){}}
 const D=s=>s||'【待填】';
 function build(){
  const prod=`产品方向：${D(V('dir'))}；目标用户：${D(V('usr'))}；用户最痛的一个环节：${D(V('pain'))}；和竞品不一样的一点：${D(V('diff'))}。`;
- $('#pA').value=`我在学界面设计的五项原则：简单性、可见性、可记忆性、可预测性、安全性。请帮我检查一个App里的一个具体操作。
-App：${D(V('aApp'))}；操作：${D(V('aOp'))}。
-我会附上截图（没有截图就按我下面的文字描述）。每一步看到什么、点哪里：
-${D(V('aDesc'))}
-请按这五条原则，每条回答两点：①这个设计在这条原则上做得怎么样（好/一般/差，一句话理由）；②如果有问题，具体改哪一处。
-要求：只根据我给的截图和描述判断，看不出来的写“无法判断”，不要编造界面上没有的内容；每条不超过60字；最后用一句话指出最需要改的一条。`;
  $('#pB').value=`我在用 Axure 画手机App的低保真原型。${prod}
 今天只做一条主任务：${D(V('task'))}。
 请为这条主任务设计 3 到 4 个页面，并只输出“摆放清单”，不要输出别的内容。先用一句话列出页面名，再逐页给出一张表，格式严格如下：
@@ -269,9 +253,9 @@ function lpreview(){LP=parseList($('#rB').value);const m=$('#mL');
 $('#lprev').onclick=lpreview;
 $('#lex').onclick=()=>{$('#rB').value=SAMPLE_LIST;save();lpreview()};
 $('#lcc').onclick=()=>{$('#rB').value='';$('#lphone').classList.add('empty');$('#lcanvas').style.display='none';$('#ltabs').innerHTML='';$('#lwarn').style.display='none';$('#mL').textContent='';save()};
-const DEMO={dir:'校园拼单App',usr:'住校大学生',pain:'点外卖凑不够起送价，又要一个个去问同学',diff:'同楼同学自动匹配，发起只要三步',task:'用户发起一个拼单，等同学加入',aApp:'闲鱼',aOp:'发布一件闲置',aDesc:'1. 点底部中间的“发布”\n2. 选照片\n3. 填标题和价格\n4. 点“发布”，页面回到首页'};
+const DEMO={dir:'校园拼单App',usr:'住校大学生',pain:'点外卖凑不够起送价，又要一个个去问同学',diff:'同楼同学自动匹配，发起只要三步',task:'用户发起一个拼单，等同学加入'};
 $('#demo').onclick=()=>{Object.entries(DEMO).forEach(([k,v])=>$('#'+k).value=v);save();build();$('#m0').textContent='已填入示例，你可以直接改成自己的'};
 $('#clr').onclick=()=>{FIELDS.forEach(i=>{if(i!=='cWhere')$('#'+i).value=''});$('#phone').classList.add('empty');save();build();$('#m0').textContent='已清空'};
-$('#all').onclick=()=>{build();const t=`【我的原型】\n${['产品方向：'+V('dir'),'目标用户：'+V('usr'),'最痛的一段：'+V('pain'),'差异点：'+V('diff'),'主任务：'+V('task')].join('\n')}\n\n【页面清单与元件】\n${V('rB')}\n\n【我决定改的一处】\n${V('rF')}\n\n【检查过的App操作】\n${V('aApp')} ${V('aOp')}`;copyText(t,$('#mAll'))};
+$('#all').onclick=()=>{build();const t=`【我的原型】\n${['产品方向：'+V('dir'),'目标用户：'+V('usr'),'最痛的一段：'+V('pain'),'差异点：'+V('diff'),'主任务：'+V('task')].join('\n')}\n\n【页面清单与元件】\n${V('rB')}\n\n【我决定改的一处】\n${V('rF')}`;copyText(t,$('#mAll'))};
 load();build();
 </script></body></html>
