@@ -61,7 +61,7 @@ mark{background:#FFE08A;border-radius:4px}
  <div><h1>场景四格小教练</h1><p class="sub">用 PSPS 四格，写出你画像人物的场景。写的时候，这里会提醒你缺了什么。写完复制保存，或存成图片。</p></div>
 
  <div class="card">
-  <h2>第一步：写场景（最多写三个）</h2>
+  <h2>第一步：写场景（写两个）</h2>
   <div class="tabs" id="tabs"></div>
   <div class="row" style="margin-top:8px"><button class="btn alt" id="demo" type="button">看示例（小李约饭）</button><button class="btn alt" id="clr" type="button">清空这一个</button></div>
   <label class="f" for="fp">人物<small>一句话：他是谁 + 一个特点</small></label><textarea id="fp" style="min-height:58px"></textarea><div class="chips" id="cp"></div>
@@ -75,8 +75,8 @@ mark{background:#FFE08A;border-radius:4px}
  </div>
 
  <div class="card">
-  <h2>第二步（回去做）：选一个，写成四句话小故事</h2>
-  <div class="tip">选三个场景里最想讲的一个。点“用这个场景起草”，页面先帮你搭好四句，你再改成自己的话。</div>
+  <h2>第二步（回去做）：把课上那个场景，写成四句话小故事</h2>
+  <div class="tip">用课上写的第一个场景来写。点“用这个场景起草”，页面先帮你搭好四句，你再改成自己的话。</div>
   <div class="row"><select id="pick" class="opt" style="font:inherit"></select><button class="btn alt" id="draft" type="button">用这个场景起草</button></div>
   <label class="f" for="ss">S　情景<small>大家都知道的背景，别写产品</small></label><textarea id="ss" style="min-height:58px"></textarea><div class="chips" id="cS"></div>
   <label class="f" for="sc">C　冲突<small>出现了什么麻烦</small></label><textarea id="sc" style="min-height:58px"></textarea><div class="chips" id="cC"></div>
@@ -87,9 +87,9 @@ mark{background:#FFE08A;border-radius:4px}
 </div>
 <script>
 const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KEY='ux_ch4_psps_v1';
-let D={cur:0,sc:[{},{},{}]};
-try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.sc&&o.sc.length===3)D=o}}catch(e){}
+const KEY='ux_ch4_psps_v2';
+let D={cur:0,sc:[{},{}]};
+try{const r=localStorage.getItem(KEY);if(r){const o=JSON.parse(r);if(o&&o.sc&&o.sc.length===2)D=o}}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}}
 const F={p:$('#fp'),s:$('#fs'),t:$('#ft'),o:$('#fo')},K=['p','s','t','o'];
 const ST={s:$('#ss'),c:$('#sc'),q:$('#sq'),a:$('#sa')};
@@ -100,10 +100,10 @@ const PLACE=/(宿舍|食堂|图书馆|教学楼|教室|地铁|公交|路上|校�
 const PAIN=/(但|可是|却|不好意思|怕|担心|找不到|不知道|没有|不会|太|麻烦|等了|等不到|慢|看不懂|卡|不敢|没人|错过|来不及|不清楚|不确定|翻)/;
 const VAGUE=/(不方便|不好用|体验差|很麻烦|不流畅|不友好)/;
 function tabs(){
-  $('#tabs').innerHTML=[0,1,2].map(i=>`<button type="button" class="tab ${i===D.cur?'on':''}" data-i="${i}">场景${i+1}${(D.sc[i].p||D.sc[i].s||D.sc[i].t)?' ✓':''}</button>`).join('');
+  $('#tabs').innerHTML=[0,1].map(i=>`<button type="button" class="tab ${i===D.cur?'on':''}" data-i="${i}">场景${i+1}${(D.sc[i].p||D.sc[i].s||D.sc[i].t)?' ✓':''}</button>`).join('');
   document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{D.cur=+b.dataset.i;load();});
   const keep=$('#pick').value;
-  $('#pick').innerHTML=[0,1,2].map(i=>`<option value="${i}">场景${i+1}${D.sc[i].s?'：'+esc(D.sc[i].s.slice(0,14)):''}</option>`).join('');
+  $('#pick').innerHTML=[0,1].map(i=>`<option value="${i}">场景${i+1}${D.sc[i].s?'：'+esc(D.sc[i].s.slice(0,14)):''}</option>`).join('');
   if(keep)$('#pick').value=keep;
 }
 function load(){const c=D.sc[D.cur];K.forEach(k=>F[k].value=c[k]||'');tabs();check();}
