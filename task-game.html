@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>任务通关：小林的一天</title>
+<style>
+:root{--bg:#F3F6FF;--card:#FFFFFF;--line:#CFD9F5;--ink:#1F2A44;--muted:#5B6785;--teal:#2563EB;--teal2:#60A5FA;--pale:#E8EEFF;--orange:#EA580C;--peach:#FFF1E3;--ok:#15803D;--okbg:#DDF7E7;--bad:#D6336C;--badbg:#FFE3EC;--star:#F59E0B;--onteal:#FFFFFF;--pink:#E11D74;--purple:#7C3AED;
+--font:"Microsoft YaHei","PingFang SC","Noto Sans SC","Hiragino Sans GB",sans-serif;--mono:Consolas,Menlo,"Courier New",monospace}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{background:linear-gradient(#EAF1FF,#FFF4F8 70%,#FFF9E8);background-attachment:fixed;color:var(--ink);font-family:var(--font);line-height:1.55;font-size:19px;padding:10px max(14px,env(safe-area-inset-right)) 40px max(14px,env(safe-area-inset-left));user-select:none;min-height:100vh}
+.wrap{max-width:780px;margin:0 auto}
+body.hit .wrap{animation:shake .3s}
+button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}
+#hd{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;min-height:38px}
+.pips{display:flex;gap:5px;flex:1 1 220px}
+.pip{flex:1;background:#fff;padding:4px 4px;font-size:13px;color:var(--muted);text-align:center;border:2px solid var(--line);border-radius:10px;white-space:nowrap;overflow:hidden;font-weight:700}
+.pip.on{color:#fff;background:var(--teal);border-color:#1D4ED8;box-shadow:0 3px 0 #1D4ED8}
+.pip.done{background:var(--okbg);border-color:#86D9A8;color:var(--ok)}
+.hud{display:flex;gap:8px;align-items:center;font-weight:800}
+.hp{display:none}
+.miss-chip{background:#fff;border:2px solid var(--line);border-radius:999px;padding:0 10px;font-size:14px;color:var(--muted)}
+.score{color:var(--orange);font-family:var(--mono);font-size:21px}
+.combo{background:var(--pink);color:#fff;padding:1px 12px;border-radius:999px;font-size:14px;font-family:var(--mono);box-shadow:0 3px 0 #9D174D}
+.ib{border:2px solid var(--line);background:#fff;border-radius:10px;width:auto;min-width:36px;padding:0 8px;height:34px;font-weight:800;color:var(--teal);font-size:14px}
+.card{background:#fff;border:3px solid var(--line);border-radius:18px;padding:14px 16px;margin-bottom:10px;box-shadow:0 4px 0 var(--line)}
+.say{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.say svg{flex:none;width:72px;height:72px}
+.bubble{position:relative;background:#fff;border:3px solid var(--teal2);border-radius:16px;padding:8px 12px;flex:1;font-size:18px}
+.bubble:before{content:"";position:absolute;left:-12px;top:20px;border:8px solid transparent;border-right:10px solid var(--teal2);border-left:0}
+.bubble b{color:var(--pink)}
+h1{font-size:clamp(32px,7vw,46px);margin:2px 0;color:var(--teal);letter-spacing:2px}
+h2{font-size:22px;margin:0 0 6px;color:var(--teal)}
+.sub{color:var(--muted);font-size:15px}
+.btn{display:block;width:100%;min-height:56px;border:0;border-bottom:5px solid #1E40AF;border-radius:16px;background:var(--teal);color:#fff;font-weight:800;font-size:21px;padding:8px 16px;margin-top:10px}
+.btn:active{transform:translateY(3px);border-bottom-width:2px}
+.btn.ghost{background:#fff;color:var(--teal);border:3px solid var(--teal);border-bottom-width:5px}
+.seg{display:flex;gap:8px;margin:8px 0}
+.seg button{flex:1;min-height:48px;border:3px solid var(--line);border-radius:12px;background:#fff;font-weight:700}
+.seg button.on{border-color:var(--teal);background:var(--pale);color:var(--teal)}
+.stg{margin:2px 0 8px;padding:6px 4px;border-left:8px solid var(--pink)}
+.stg small{display:block;font-family:var(--mono);letter-spacing:3px;color:var(--pink);font-size:14px;font-weight:700}
+.stg b{font-size:28px;color:var(--ink)}
+.how{border-color:var(--star)}
+.stage{position:relative;overflow:hidden;border:3px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 4px 0 var(--line)}
+.lvtitle{display:flex;justify-content:space-between;align-items:baseline;margin:2px 2px 6px}
+.lvtitle b{color:var(--teal);font-size:21px}
+.prog{height:12px;background:#fff;border:2px solid var(--line);border-radius:8px;overflow:hidden;margin:0 2px 8px}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#22C55E,#16A34A);width:0;transition:width .25s}
+.msg{min-height:30px;font-size:17px;margin:6px 2px;color:var(--muted)}
+.msg.ok{color:var(--ok);font-weight:700} .msg.no{color:var(--bad);font-weight:700}
+.fx{position:fixed;left:0;top:0;pointer-events:none;font-weight:900;font-size:26px;color:var(--ok);z-index:40;animation:up .9s forwards;font-family:var(--mono);-webkit-text-stroke:1px #fff}
+.fx.bd{color:var(--bad)}
+.bigfx{position:fixed;left:50%;top:26%;transform:translateX(-50%);z-index:41;pointer-events:none;font-size:clamp(34px,9vw,60px);font-weight:900;font-style:italic;color:var(--pink);font-family:var(--mono);-webkit-text-stroke:2px #fff;text-shadow:0 4px 0 #9D174D;animation:big 1s forwards;white-space:nowrap}
+@keyframes big{0%{transform:translateX(-50%) scale(.4);opacity:0}20%{transform:translateX(-50%) scale(1.15);opacity:1}70%{opacity:1}100%{transform:translateX(-50%) translateY(-40px) scale(1);opacity:0}}
+@keyframes up{to{transform:translateY(-50px);opacity:0}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.bump{animation:bump .45s}
+@keyframes bump{40%{transform:scale(1.18)}}
+/* 第1关 */
+.belt{height:150px;background:repeating-linear-gradient(90deg,#DCE6FF 0 24px,#EEF3FF 24px 48px);border-bottom:10px solid #94A3B8;position:relative;animation:beltm 1.4s linear infinite}
+@keyframes beltm{to{background-position:-48px 0}}
+.bcard{position:absolute;top:16px;height:104px;background:#fff;border:3px solid var(--teal);border-radius:14px;padding:8px 10px;font-weight:800;font-size:19px;line-height:1.3;display:flex;align-items:center;box-shadow:0 4px 0 #93B4F5;will-change:transform;color:var(--ink)}
+.bcard.inc{border-color:var(--orange);background:var(--peach);box-shadow:0 4px 0 #F6B98A}
+.bcard.front{outline:5px solid var(--star);outline-offset:2px}
+.bcard.fly{transition:transform .35s,opacity .35s;opacity:0;transform:translateY(120px) scale(.5)!important}
+.bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px}
+.bin{--c:var(--teal);min-height:62px;border:3px solid var(--c);border-bottom-width:6px;border-radius:14px;background:#fff;font-weight:800;font-size:19px;color:var(--c);line-height:1.2;padding:4px}
+.bin small{display:block;font-weight:500;font-size:13px;color:var(--muted)}
+.bin:active{transform:translateY(3px);border-bottom-width:3px}
+@media(max-width:520px){.bcard{font-size:17px}}
+/* 三消 */
+.legend{display:flex;flex-wrap:wrap;gap:6px;margin:0 2px 8px}
+.lg{--c:var(--teal);border:2px solid var(--c);color:var(--c);padding:1px 10px;font-size:14px;font-weight:800;border-radius:10px;background:#fff}
+.lg small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.lg.done{background:var(--c);color:#fff}.lg.done small{color:#fff}
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:2px}
+@media(max-width:520px){.board{grid-template-columns:repeat(3,1fr)}}
+.tile{min-height:96px;border:3px solid #B6C6F0;border-bottom-width:6px;border-radius:14px;background:#fff;color:var(--ink);font-weight:700;font-size:17px;line-height:1.35;padding:6px 8px}
+.tile:active{transform:translateY(2px)}
+.tile.on{border-color:var(--star);background:#FFF6D6;transform:translateY(-3px);box-shadow:0 0 0 3px #FDE68A}
+.tile.hint{animation:hn .7s infinite;border-color:var(--purple)}
+@keyframes hn{50%{background:#EDE4FF}}
+.tile.boom{animation:boom .38s forwards}
+@keyframes boom{to{transform:scale(1.5);opacity:0}}
+/* 第4关 */
+.steps{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.stp{min-height:64px;text-align:left;border:3px solid #B6C6F0;border-bottom-width:6px;border-radius:14px;background:#fff;padding:6px 12px;font-weight:800;color:var(--ink)}
+.stp small{display:block;font-weight:500;color:var(--muted);font-size:14px;line-height:1.3}
+.stp.used{opacity:.25}
+.slotbar{display:flex;gap:4px;margin:6px 0}
+.slotbar i{flex:1;height:38px;border:2px dashed var(--line);border-radius:8px;display:grid;place-items:center;font-style:normal;font-size:13px;font-weight:800;color:var(--muted);font-family:var(--mono)}
+.slotbar i.f{border-style:solid;color:#fff;animation:pop .25s}
+.slotbar i.f.a{background:var(--teal);border-color:var(--teal)} .slotbar i.f.b{background:var(--pink);border-color:var(--pink)}
+.faces{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:8px}
+.faces button{min-height:84px;border:3px solid var(--line);border-bottom-width:6px;border-radius:14px;background:#fff;font-weight:800;font-size:19px}
+.faces svg{width:42px;height:42px;display:block;margin:0 auto 2px}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0;text-align:left}
+.cmp div{padding:8px 12px;background:var(--pale);border-radius:12px}
+.cmp b{display:block;font-size:14px;color:var(--teal)}
+.ride{width:100%;height:auto;display:block;background:#fff;border:2px solid var(--line);border-radius:14px}
+.brake{min-height:80px;font-size:26px;background:var(--bad);border-bottom-color:#9D174D;animation:pls 1.2s infinite}
+@keyframes pls{50%{transform:scale(1.02)}}
+.rank{font-family:var(--mono);font-weight:900;font-size:86px;line-height:1;color:var(--star);text-shadow:0 5px 0 #B45309;animation:pop .5s}
+.rank.A{color:#22C55E;text-shadow:0 5px 0 #166534} .rank.B{color:#60A5FA;text-shadow:0 5px 0 #1D4ED8}
+.mini{font-family:var(--mono);font-weight:900;font-size:32px;color:var(--star);letter-spacing:6px}
+.center{text-align:center}
+.take li{margin:6px 0}
+.miss{border-left:6px solid var(--pink);padding:4px 12px;margin:8px 0;background:var(--badbg);border-radius:8px;font-size:17px}
+.modal{position:fixed;inset:0;background:rgba(31,42,68,.55);z-index:50;display:grid;place-items:center;padding:16px}
+.modal .card{max-width:520px;width:100%;margin:0}
+.cd{position:fixed;inset:0;z-index:60;display:grid;place-items:center;background:rgba(243,246,255,.95)}
+.cd b{font-family:var(--mono);font-size:clamp(60px,18vw,130px);font-style:italic;color:var(--teal);letter-spacing:6px;text-shadow:0 6px 0 #1E40AF;animation:zoom .6s}
+@keyframes zoom{from{transform:scale(2.4);opacity:0}}
+@keyframes pop{from{transform:scale(.8);opacity:0}}
+svg text{font-family:var(--font)}
+#cf{position:fixed;inset:0;pointer-events:none;z-index:45}
+.blink{animation:blink 4s infinite;transform-origin:40px 42px}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){.blink,.belt,.brake{animation:none}}
+</style></head><body>
+<div class="wrap"><div id="hd"></div><div id="main"></div></div>
+<canvas id="cf"></canvas>
+<script>
+"use strict";
+/* ================= 工具 ================= */
+const $=s=>document.querySelector(s);
+const main=$('#main'),hd=$('#hd');
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+let S,cur=null,SND=false;
+const PR=[{t:'简化任务结构',s:'步骤越少，越不容易出错'},{t:'利用限制因素',s:'设个障碍，只能用对办法'},{t:'考虑易出错性',s:'要提醒，也要能挽回'},{t:'标准化',s:'大家都这样，学一次到处通用'}];
+const FOUR=[{t:'动机和目的',s:'他为什么要做'},{t:'行动计划',s:'打算怎么做'},{t:'具体操作',s:'做的时候遇到什么、怎么办'},{t:'任务评估',s:'做完以后觉得怎样'}];
+function reset(keepMode){const m=S?S.easy:false;S={lv:0,score:0,combo:0,max:0,hearts:3,mist:[0,0,0,0],missed:[],easy:keepMode?m:false,assist:false,badges:[],run:0,doneRun:-1}}
+const K=()=>(S.easy?.7:1)*(S.assist?.8:1);
+function mascot(mood){const m={happy:'M26 54 Q40 66 54 54',sad:'M28 60 Q40 52 52 60',neutral:'M30 58 L50 58',wow:'M34 54 Q40 66 46 54 Q40 52 34 54'}[mood||'neutral'];
+ return `<svg viewBox="0 0 80 80" aria-hidden="true"><line x1="40" y1="8" x2="40" y2="18" stroke="#2563EB" stroke-width="3"/><circle cx="40" cy="7" r="5" fill="#E11D74"/><rect x="10" y="18" width="60" height="54" rx="14" fill="#60A5FA" stroke="#2563EB" stroke-width="3"/><rect x="17" y="27" width="46" height="37" rx="9" fill="#fff"/><g class="blink"><circle cx="30" cy="42" r="6" fill="#1F2A44"/><circle cx="50" cy="42" r="6" fill="#1F2A44"/><circle cx="32" cy="40" r="2" fill="#fff"/><circle cx="52" cy="40" r="2" fill="#fff"/></g><path d="${m}" fill="none" stroke="#1F2A44" stroke-width="3" stroke-linecap="round"/></svg>`}
+function lin(mood){const m={happy:'M30 52 Q40 62 50 52',sad:'M30 58 Q40 50 50 58',neutral:'M32 55 L48 55',angry:'M30 58 Q40 50 50 58'}[mood||'neutral'];
+ return `<svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="42" r="28" fill="#F6D2B0"/><path d="M12 38 Q14 10 40 10 Q66 10 68 38 Q56 24 40 26 Q24 24 12 38Z" fill="#3B2F2A"/><circle cx="30" cy="44" r="3.5" fill="#3B2F2A"/><circle cx="50" cy="44" r="3.5" fill="#3B2F2A"/>${mood==='angry'?'<path d="M24 36 L34 40 M56 36 L46 40" stroke="#3B2F2A" stroke-width="3"/>':''}<path d="${m}" fill="none" stroke="#3B2F2A" stroke-width="3" stroke-linecap="round"/></svg>`}
+function monster(){return `<svg viewBox="0 0 40 40"><path d="M6 30 Q4 8 20 8 Q36 8 34 30 L30 26 L25 32 L20 26 L15 32 L10 26Z" fill="#E11D74"/><circle cx="14" cy="20" r="4" fill="#fff"/><circle cx="26" cy="20" r="4" fill="#fff"/><circle cx="15" cy="21" r="2" fill="#222"/><circle cx="25" cy="21" r="2" fill="#222"/><path d="M9 13 L17 17 M31 13 L23 17" stroke="#7a1f16" stroke-width="3"/></svg>`}
+function face(v){const c=v>0?'#15803D':v<0?'#D6336C':'#6B7280',m=v>0?'M12 24 Q20 32 28 24':v<0?'M12 30 Q20 22 28 30':'M13 27 L27 27';return `<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="none" stroke="${c}" stroke-width="3"/><circle cx="14" cy="16" r="2.5" fill="${c}"/><circle cx="26" cy="16" r="2.5" fill="${c}"/><path d="${m}" fill="none" stroke="${c}" stroke-width="3" stroke-linecap="round"/></svg>`}
+function say(html,mood){return `<div class="say" id="say">${mascot(mood)}<div class="bubble">${html}</div></div>`}
+function bub(html,mood){const s=$('#say');if(s)s.innerHTML=mascot(mood||'neutral')+`<div class="bubble">${html}</div>`}
+/* 音效（默认关闭） */
+let AC=null;function beep(f,d,t,v){if(!SND)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain();o.type=t||'sine';o.frequency.value=f;g.gain.value=v||.05;o.connect(g);g.connect(AC.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.stop(AC.currentTime+d)}catch(e){}}
+function sfx(k){if(k==='ok'){beep(660,.12);setTimeout(()=>beep(880,.15),90)}else if(k==='no')beep(150,.25,'sawtooth',.06);else if(k==='win'){[523,659,784,1046].forEach((f,i)=>setTimeout(()=>beep(f,.2),i*110))}}
+function fxText(el,txt,bad){const r=el.getBoundingClientRect(),d=document.createElement('div');d.className='fx'+(bad?' bd':'');d.textContent=txt;d.style.left=(r.left+r.width/2-20)+'px';d.style.top=(r.top+r.height/2-12)+'px';document.body.appendChild(d);setTimeout(()=>d.remove(),950)}
+function header(){
+ hd.innerHTML=`<div class="pips">${['拆任务','四部分','设计原则','旅程图'].map((n,i)=>`<div class="pip ${S.badges[i]?'done':''} ${i===S.lv&&!S.done?'on':''}" data-l="${i}" style="cursor:pointer">${i+1} ${n}</div>`).join('')}</div>
+ <div class="hud"><span class="miss-chip">失误 ${S.mist[Math.min(S.lv,3)]||0}</span><span class="score" id="sc">${String(S.score).padStart(4,'0')}</span>${S.combo>=2?`<span class="combo bump">COMBO ×${S.combo}</span>`:''}<button class="ib" id="snd" title="音效" style="width:auto;padding:0 8px;font-size:13px">${SND?'声音开':'声音关'}</button><button class="ib" id="hp" title="速记卡">?</button></div>`;
+ hd.querySelectorAll('.pip').forEach(p=>p.onclick=()=>{cur=null;menu()});$('#snd').onclick=()=>{SND=!SND;header();if(SND)sfx('ok')};$('#hp').onclick=cheat}
+const CHEAT=[
+ '<b>任务像一棵倒着长的树</b>：大任务拆成小任务（点外卖：选店、选菜、下单、付款、等餐）。意外情况要写成<b>“如果……就……”</b>，任务树才完整。',
+ '<b>做成一件事有四个部分</b>：<br>动机和目的：为什么做<br>行动计划：打算怎么做<br>具体操作：做的时候遇到什么、怎么办<br>任务评估：做完以后觉得怎样（最容易被忘）',
+ '<b>四条设计原则</b>：<br>简化任务结构：步骤越少越不容易出错<br>利用限制因素：设个障碍，只能用对办法<br>考虑易出错性：要提醒，也要能挽回<br>标准化：大家都这样，学一次到处通用',
+ '<b>旅程图八步</b>：前四步摆事实（特征、阶段、行为、触点），后四步找问题（预期、实际体验、情绪、寻找机会）。<br>低于预期是负面，符合是一般，超出是满意。<b>只改情绪最低的那一个</b>。'];
+function cheat(){const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="card"><h2>速记卡 · 第${Math.min(S.lv,3)+1}关</h2><p>${CHEAT[Math.min(S.lv,3)]}</p><button class="btn" id="cl">知道了，继续</button></div>`;document.body.appendChild(m);m.querySelector('#cl').onclick=()=>m.remove()}
+/* 得分 / 失分 */
+function big(t){const d=document.createElement('div');d.className='bigfx';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),1000)}
+function good(el,pts){S.combo++;S.max=Math.max(S.max,S.combo);const p=(pts||10)+Math.min(S.combo-1,5)*2;S.score+=p;header();if(el)fxText(el,'+'+p);if(S.combo>=3)big('COMBO ×'+S.combo);sfx('ok')}
+function rec(id,q,a,why){if(!S.missed.find(m=>m.id===id))S.missed.push({id,q,a,why,lv:S.lv})}
+function bad(el,id,q,a,why,noheart){S.combo=0;S.mist[S.lv]++;rec(id,q,a,why);header();if(el){el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake');fxText(el,'差一点',1)}document.body.classList.add('hit');setTimeout(()=>document.body.classList.remove('hit'),320);sfx('no');}
+function setMsg(t,k){const m=$('#msg');if(m){m.className='msg '+(k||'');m.innerHTML=t}}
+function gameOver(){cur=null;const m=document.createElement('div');m.className='modal';m.innerHTML=`<div class="card center"><div style="width:90px;margin:auto">${mascot('sad')}</div><h2 style="font-family:var(--mono);color:var(--bad);font-size:34px;">这一关没过</h2><p>5次机会用完了。再来一次，这次速度会放慢一点。</p><button class="btn" id="re">再来一次</button></div>`;document.body.appendChild(m);
+ m.querySelector('#re').onclick=()=>{m.remove();S.assist=true;S.hearts=3;S.mist[S.lv]=0;S.missed=S.missed.filter(x=>x.lv!==S.lv);S.combo=0;startLevel(S.lv)}}
+function confetti(n){const c=$('#cf'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+ const cols=['#F2B134','#5F9387','#B4572B','#165E5D','#F6C94C'];const P=Array.from({length:n||90},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.4,vx:(Math.random()-.5)*3,vy:2+Math.random()*4,r:4+Math.random()*5,c:cols[Math.floor(Math.random()*5)],a:Math.random()*6}));
+ let t=0;(function f(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=.15;x.fillStyle=p.c;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore()});if(++t<100)requestAnimationFrame(f);else x.clearRect(0,0,c.width,c.height)})()}
+let last=0;function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;if(cur&&cur.tick)cur.tick(dt);requestAnimationFrame(loop)}requestAnimationFrame(loop);
+/* ================= 流程 ================= */
+const STORY=[
+ {t:'第1关 · 拆开“点外卖”',how:'卡片从右往左跑，点箱子，把最左边带金框的步骤分进对应的小任务。'},
+ {t:'第2关 · 点外卖的四个部分',how:'三消：点3张属于同一部分的，一起消掉。'},
+ {t:'第3关 · 点外卖App的设计',how:'三消：点3张用了同一条设计原则的，一起消掉。'},
+ {t:'第4关 · 点外卖的旅程图',how:'先排八步，再判断每一站的情绪，最后在最低点踩刹车。'}];
+function home(){reset(true);S.done=false;header();hd.innerHTML='';
+ main.innerHTML=`<div class="card center" style="padding:26px 16px"><div class="sub" style="font-family:var(--mono);letter-spacing:5px;color:var(--pink);font-weight:700">UX TASK GAME</div><h1>任务通关</h1><div class="sub">拆任务 · 四部分 · 设计原则 · 旅程图 &nbsp;|&nbsp; 4关约4分钟</div></div>
+ ${say('我是<b>小布</b>！小林今天什么都不顺，需要产品实习生帮忙。今天的主角：<b>点外卖</b>。从拆任务到画旅程图，4关连起来，约4分钟。第1至3关各有5次答错机会，用完才算失败（可重来，速度会放慢）；第2、3关同样有5次机会；第4关不会失败，只影响评级。',"happy")}
+ <div class="card"><b>速度</b><div class="seg" id="sg"><button data-e="1">轻松（慢一点）</button><button data-e="0" class="on">普通</button></div><div class="sub">右上角的 ? 随时能看速记卡。电脑和手机都能玩。</div></div>
+ <button class="btn" id="go">PRESS START</button><button class="btn ghost" id="sl">选关</button>`;$('#sl').onclick=menu;
+ $('#sg').onclick=e=>{const b=e.target.closest('button');if(!b)return;S.easy=b.dataset.e==='1';[...$('#sg').children].forEach(x=>x.classList.toggle('on',x===b))};
+ $('#go').onclick=()=>{S.score=0;startLevel(0)}}
+function menu(){cur=null;S.done=false;header();const N=['拆开“点外卖”','点外卖的四个部分','点外卖App的设计','点外卖的旅程图'],T=['约30秒','约1分钟','约1分钟','约1分钟'],G=['传送带分拣','三消','三消','排序 + 判情绪 + 过山车'];
+ main.innerHTML=`<div class="stg"><small>STAGE SELECT</small><b>选关</b></div><div class="sub" style="margin:0 2px 8px">想从哪一关开始都行，可以反复玩。</div>${N.map((n,i)=>`<button class="card sel" data-l="${i}" style="width:100%;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px"><span><span style="font-family:var(--mono);color:var(--pink)">STAGE 0${i+1}</span><br><b style="font-size:20px;color:#fff">${n}</b><br><span class="sub">${G[i]} · ${T[i]}</span></span><span class="rank ${S.badges[i]?['B','A','S'][S.badges[i]-1]:''}" style="font-size:44px">${S.badges[i]?['B','A','S'][S.badges[i]-1]:'—'}</span></button>`).join('')}
+ ${S.badges.some(x=>x)?'<button class="btn" id="fin">查看战绩</button>':''}<button class="btn ghost" id="hm">回首页</button>`;
+ main.querySelectorAll('.sel').forEach(b=>b.onclick=()=>startLevel(+b.dataset.l));if($('#fin'))$('#fin').onclick=final;$('#hm').onclick=home}
+function story(i){S.lv=i;S.hearts=3;S.combo=0;header();cur=null;const L=STORY[i];
+ main.innerHTML=`<div class="stg"><small>STAGE 0${i+1}</small><b>${L.t.split('·')[1].trim()}</b></div>${say(L.s,'neutral')}<div class="card how"><b>操作：</b>${L.how}</div><button class="btn ghost" id="ch">速记卡</button><button class="btn" id="go">START</button>`;
+ $('#ch').onclick=cheat;$('#go').onclick=()=>startLevel(i)}
+function startLevel(i){S.lv=i;S.run++;S.hearts=3;S.combo=0;cur=null;main.innerHTML='';header();const L=STORY[i];const o=document.createElement('div');o.className='cd';o.innerHTML=`<div class="center" style="padding:0 20px"><div class="stg" style="display:inline-block;text-align:left"><small>STAGE 0${i+1}</small><b>${L.t.split('·')[1].trim()}</b></div><div style="color:var(--ink);font-size:20px;max-width:420px;margin:6px auto">${L.how}</div></div>`;document.body.appendChild(o);sfx('ok');
+ setTimeout(()=>{o.innerHTML='<b style="color:var(--pink)">GO!</b>';sfx('win')},1800);setTimeout(()=>{o.remove();[L1,L2,L3,L4][i]()},2300)}
+function levelDone(){if(S.doneRun===S.run)return;S.doneRun=S.run;cur=null;const st=S.mist[S.lv]<=2?3:S.mist[S.lv]<=5?2:1;S.badges[S.lv]=st;header();confetti();sfx('win');
+ const name=['拆解师','倾听师','救火员','旅程设计师'][S.lv];
+ main.innerHTML=`<div class="card center"><div class="sub" style="font-family:var(--mono);letter-spacing:5px">STAGE 0${S.lv+1} CLEAR</div><div class="rank ${['B','A','S'][st-1]}">${['B','A','S'][st-1]}</div><p>获得称号：<b style="color:var(--star)">${name}</b><br><span class="sub">失误 ${S.mist[S.lv]} 次 · 总分 ${String(S.score).padStart(4,'0')}</span></p></div>
+ ${say(['任务树拆得真漂亮！','四个部分全分清了！','设计原则全消掉了！','你已经是合格的产品实习生了！'][S.lv],'happy')}<button class="btn" id="nx">${S.lv<3?'NEXT STAGE':'查看战绩'}</button><button class="btn ghost" id="mn">选关</button>`;$('#mn').onclick=menu;
+ $('#nx').onclick=()=>{if(S.lv<3)startLevel(S.lv+1);else final()}}
+const TAKE=['任务像一棵树：拆到每一步都看得见、改得了；写清先后顺序，再补“如果……就……”。','做成一件事有四个部分：动机和目的、行动计划、具体操作、任务评估（最容易漏的是评估）。','让任务更好做的四条原则：简化、利用限制、考虑易出错、标准化。','旅程图八步：前四步摆事实，后四步找问题；只改情绪最低的那一个。'];
+function final(){S.done=true;S.lv=4;header();cur=null;confetti(160);sfx('win');
+ const tot=S.mist.reduce((a,b)=>a+b,0),rank=tot<=6?'任务拆解大师':tot<=14?'合格的产品实习生':'潜力实习生';
+ const miss=S.missed.map(m=>`<div class="miss"><b>${m.q}</b><br>答案：${m.a}<br><span class="sub">${m.why}</span></div>`).join('');
+ main.innerHTML=`<div class="card center"><div class="sub" style="font-family:var(--mono);letter-spacing:5px;color:var(--pink)">ALL CLEAR</div><h1>转正通过！</h1><div class="mini">${[0,1,2,3].map(i=>S.badges[i]?['B','A','S'][S.badges[i]-1]:'-').join(' ')}</div>
+ <p>总分 <b style="color:var(--star)">${S.score}</b> · 最高连击 ${S.max} · 称号：<b style="color:var(--teal)">${rank}</b></p></div>
+ ${say('把下面4句话带走，下一步，画你自己产品的情绪曲线。','happy')}
+ <div class="card"><h2>通关攻略：带走的4句话</h2><ol class="take">${TAKE.map(t=>`<li>${t}</li>`).join('')}</ol></div>
+ ${miss?`<div class="card"><h2>失误复盘（${S.missed.length}）</h2>${miss}</div>`:'<div class="card center"><b>全程零失误，没有错题。</b></div>'}
+ <button class="btn" id="again">再来一局</button>`;$('#again').onclick=home}
+/* ================= 第1关：分拣流水线 ================= */
+function L1(){
+ const BINS=['选店','选菜','下单','付款','等餐','意外情况'];
+ const C=[['找离宿舍近的',0,'选店：先挑一家近的'],['加入购物车',1,'选菜：把想吃的加进购物车'],['填地址和电话',2,'下单：填好送到哪'],['选支付方式',3,'付款：先选怎么付'],['输入密码',3,'付款：输入密码'],['看骑手位置',4,'等餐：看骑手到哪了'],['下楼取餐',4,'等餐：下楼把餐取走'],
+ ['满减差两块',5,'意外：写成“如果满减差两块，就再加一份小食”'],['等了太久还没送到',5,'意外：写成“如果等太久，就催一下骑手”']];
+ const deck=shuf(C.map((c,i)=>({t:c[0],a:c[1],why:c[2],id:'1-'+i})));
+ main.innerHTML=`<div class="lvtitle"><b>点一份外卖</b><span class="sub"><span id="lv5" style="color:var(--bad);font-weight:900;letter-spacing:2px;margin-right:10px">♥♥♥♥♥</span><span id="pg">0 / ${deck.length}</span></span></div><div class="prog"><i id="pr"></i></div>
+ <div class="stage"><div class="belt" id="belt"></div><div class="bins">${BINS.map((b,i)=>`<button class="bin" style="--c:${['#2563EB','#15803D','#B45309','#7C3AED','#0E7490','#EA580C'][i]}" data-i="${i}">${i===5?'⚡ ':''}${b}<small>${i===5?'如果……就……':'小任务'}</small></button>`).join('')}</div></div><div class="msg" id="msg">点箱子，把最左边带金框的卡片分进去。共有 5 次机会，选错 1 次少 1 次。</div>`;
+ const belt=$('#belt');let W=belt.clientWidth,CW=Math.min(220,W*.5),list=[],idx=0,spawn=1.5,done=0,lives=5,dead=false;
+ const showL=()=>{$('#lv5').textContent='♥'.repeat(lives)+'♡'.repeat(5-lives)};
+ function slotX(){let m=W;list.forEach(o=>{if(!o.gone)m=Math.max(m,o.x+CW+24)});return m}
+ function lose(){lives--;showL();if(lives<=0&&!dead){dead=true;cur=null;gameOver()}}
+ const cross=10/K(),V=(W+CW)/cross,gap=3.0/K();
+ function front(){let f=null;list.forEach(o=>{if(!o.gone&&(!f||o.x<f.x))f=o});return f}
+ function mark(){list.forEach(o=>o.el.classList.remove('front'));const f=front();if(f)f.el.classList.add('front')}
+ function remove(o,fly){o.gone=true;if(fly){o.el.classList.add('fly');setTimeout(()=>o.el.remove(),380)}else o.el.remove();done++;$('#pg').textContent=done+' / '+deck.length;$('#pr').style.width=done/deck.length*100+'%';mark();if(done===deck.length)setTimeout(levelDone,500)}
+ document.querySelectorAll('.bin').forEach(b=>b.onclick=()=>{const o=front();if(!o)return;const i=+b.dataset.i;
+  if(i===o.d.a){good(o.el,10);setMsg(o.d.why,'ok');bub?0:0;remove(o,true)}
+  else{bad(o.el,o.d.id,'“'+o.d.t+'”该分进哪个箱子？',BINS[o.d.a],o.d.why);lose();setMsg('不对：'+o.d.why.split('：')[0]+'的步骤，是另一个箱子。再试一次。','no')}});
+ cur={kind:'L1',front,tick(dt){if(dead)return;spawn-=dt;if(spawn<=0&&idx<deck.length&&slotX()<=W+2){const d=deck[idx++],el=document.createElement('div');el.className='bcard'+(d.a===5?' inc':'');el.style.width=CW+'px';el.textContent=(d.a===5?'⚡ ':'')+d.t;belt.appendChild(el);list.push({d,el,x:W,gone:false});spawn=gap;mark()}
+  list.forEach(o=>{if(o.gone)return;o.x-=V*dt;o.el.style.transform=`translateX(${o.x}px)`;if(o.x<-CW){if(!o.missed){o.missed=true;setMsg('没来得及：'+o.d.why+'。它会再绕回来一次。','no');bad(o.el,o.d.id,'“'+o.d.t+'”该分进哪个箱子？',BINS[o.d.a],o.d.why,true)}o.x=slotX()}})}}}
+/* ================= 第2、3关：三消 ================= */
+function M3(cfg){
+ const items=shuf(cfg.items.map((it,i)=>({t:it[0],c:it[1],id:cfg.id+'-'+i})));let sel=[],cleared=0,lock=false,lives=5;const N=cfg.cats.length;
+ main.innerHTML=`<div class="lvtitle"><b>${cfg.title}</b><span class="sub"><span id="lv5" style="color:var(--bad);font-weight:900;letter-spacing:2px;margin-right:10px">♥♥♥♥♥</span><span id="pg">0 / ${N} 组</span></span></div><div class="prog"><i id="pr"></i></div>
+ <div class="legend">${cfg.cats.map((c,i)=>`<span class="lg" id="lg${i}" style="--c:${cfg.col[i]}">${c.t}<small>${c.s}</small></span>`).join('')}</div>
+ <div class="board" id="bd">${items.map((o,i)=>`<button class="tile" data-k="${i}" data-c="${o.c}">${o.t}</button>`).join('')}</div><div class="msg" id="msg">点 3 张属于同一类的，三张一起消掉。共有 5 次机会，选错一组少 1 次。</div><button class="btn ghost" id="hint" style="min-height:46px;font-size:17px">提示一组（记 1 次失误）</button>`;
+ $('#hint').onclick=()=>{if(lock)return;const left=[...bd.querySelectorAll('.tile')];if(!left.length)return;const c=left[0].dataset.c;bd.querySelectorAll('.hint').forEach(x=>x.classList.remove('hint'));left.filter(x=>x.dataset.c===c).slice(0,3).forEach(x=>x.classList.add('hint'));S.mist[S.lv]++;header();setMsg('闪动的三张是同一类：'+cfg.cats[c].t,'ok')};
+ const bd=$('#bd');
+ bd.onclick=e=>{const b=e.target.closest('.tile');if(!b||lock)return;const k=+b.dataset.k,i=sel.indexOf(k);
+  if(i>=0){sel.splice(i,1);b.classList.remove('on');return}
+  sel.push(k);b.classList.add('on');if(sel.length<3)return;
+  const g=sel.map(x=>items[x]),ok=g.every(x=>x.c===g[0].c),els=sel.map(x=>bd.querySelector(`[data-k="${x}"]`));
+  if(ok){lock=true;good(els[1],15);cleared++;const c=cfg.cats[g[0].c];setMsg(c.t+'：'+c.s,'ok');$('#lg'+g[0].c).classList.add('done');
+   els.forEach(el=>el.classList.add('boom'));setTimeout(()=>{els.forEach(el=>el.remove());lock=false;sel=[];$('#pg').textContent=cleared+' / '+N+' 组';$('#pr').style.width=cleared/N*100+'%';if(cleared===N)setTimeout(levelDone,500)},380)}
+  else{const names=[...new Set(g.map(x=>cfg.cats[x.c].t))];
+   bad(els[1],cfg.id+'-'+g.map(x=>x.id).join(),'这三张能消掉吗：“'+g.map(x=>x.t).join('”“')+'”',g.map(x=>cfg.cats[x.c].t).join(' / '),'三张要来自同一类。');
+   setMsg('不能消：这三张分别是 '+g.map(x=>cfg.cats[x.c].t).join(' / ')+'，要选同一类。','no');els.forEach(el=>{el.classList.remove('on');el.classList.remove('shake');void el.offsetWidth;el.classList.add('shake')});sel=[];lives--;$('#lv5').textContent='♥'.repeat(lives)+'♡'.repeat(5-lives);if(lives<=0){lock=true;cur=null;setTimeout(gameOver,500)}}};
+ cur={kind:'M3',tick(){}}}
+function L2(){M3({id:'2',title:'点外卖的四个部分',cats:FOUR,col:['#2563EB','#15803D','#B45309','#C026D3'],items:[
+ ['中午饿了，想在十二点半前吃上饭',0],['下午有课，必须一点前吃完',0],['不想出宿舍，图个省事',0],
+ ['下课前五分钟打开外卖App',1],['选一家离宿舍近的店',1],['先看评分，再决定点什么',1],
+ ['满减差两块，又加了一瓶饮料',2],['地址填错了，赶紧改成宿舍楼',2],['支付失败，换了种支付方式',2],
+ ['饭送到时还是热的，给了好评',3],['分量比图片小，下次换一家',3],['送得太慢，打了差评',3]]})}
+function L3(){M3({id:'3',title:'点外卖App的设计',cats:PR,col:['#2563EB','#15803D','#B45309','#C026D3'],items:[
+ ['一键再来一单，不用重新选',0],['扫码直接登录，不用输密码',0],['地址自动定位，不用手填',0],
+ ['超出配送范围的店，自动变灰',1],['手机号框只能输数字',1],['必选规格没选，“下单”按钮是灰的',1],
+ ['下单前弹出“地址对吗？”',2],['下单后30秒内可以取消',2],['支付前再核对一次金额',2],
+ ['返回箭头在左上角',3],['购物车图标和其他App一样',3],['红点表示新消息，和微信一样',3]]})}
+/* ================= 第4关：旅程图大挑战 ================= */
+const STEPS=[['提取用户特征','从画像里挑出和这件事有关的特点和目标'],['划分旅程阶段','按时间先后分成几段'],['罗列操作行为','每段里用户做了什么，只写主要路线'],['标记服务触点','App、人、物、声音'],['描述用户预期','每一步，用户期待发生什么'],['记录实际体验','实际发生了什么，比预期差就是痛点'],['描述情绪','超出预期满意，低于预期负面'],['寻找机会','从情绪最低处，挑最痛的一个来改']];
+function L4(){part4A()}
+function part4A(){
+ const items=shuf(STEPS.map((s,i)=>({n:s[0],d:s[1],i})));let next=0,t0=performance.now();
+ main.innerHTML=`<div class="lvtitle"><b>① 排八步</b><span class="sub">按顺序，一个一个点</span></div>
+ <div class="card"><div class="sub">前四步“摆事实”，后四步“找问题”。顺序是：先搞清他是谁，再一步步走到“改哪里”。</div><div class="slotbar" id="sb">${STEPS.map((_,i)=>`<i>${i+1}</i>`).join('')}</div></div>
+ <div class="steps" id="st">${items.map(o=>`<button class="stp" data-i="${o.i}">${o.n}<small>${o.d}</small></button>`).join('')}</div><div class="msg" id="msg"></div>`;
+ document.querySelectorAll('.stp').forEach(b=>b.onclick=()=>{if(b.classList.contains('used'))return;const i=+b.dataset.i;
+  if(i===next){b.classList.add('used');const s=$('#sb').children[next];s.textContent=STEPS[i][0].slice(-2);s.classList.add('f',next<4?'a':'b');next++;good(b,6);
+   if(next===8){const sec=Math.round((performance.now()-t0)/1000);setMsg('排好了！用时 '+sec+' 秒。前四步摆事实，后四步找问题。','ok');setTimeout(part4B,1400)}else setMsg(next===4?'前四步完成，接下来“找问题”。':'','ok')}
+  else{bad(b,'4A-'+(i+1),'旅程图第'+(next+1)+'步是什么？',STEPS[next][0],'第'+(next+1)+'步：'+STEPS[next][0]+'（'+STEPS[next][1]+'）');setMsg('现在该排第 '+(next+1)+' 步。','no')}});
+ cur={kind:'L4A',tick(){}}}
+function part4B(){
+ const ST=[['选店','挑到一家近又好评的店','前几家就有，一眼选中',0,'符合预期是一般',0],['下单','满减差两块','加了一瓶饮料，正好凑够',1,'超出预期是满意',1],['等餐','预期30分钟送到','实际等了一个多小时',-1,'低于预期是负面',-2],['取餐','预期骑手送到宿舍楼下','实际要自己跑到校门口取',-1,'低于预期是负面',-1],['吃完','预期能吃上饭就行','饭还是热的，还多了一双筷子',1,'超出预期是满意',1]];
+ let k=0;const done=[];
+ function one(){const q=ST[k];main.innerHTML=`<div class="lvtitle"><b>② 点外卖：判情绪</b><span class="sub">${k+1} / 5</span></div><div class="prog"><i style="width:${k/5*100}%"></i></div>
+ <div class="card center"><div class="sub" style="font-family:var(--mono);letter-spacing:3px">${ST.map((x,i)=>i<k?'●':i===k?'◉':'○').join(' ')}</div><div style="font-size:26px;font-weight:900;color:var(--star)">${q[0]}</div><div class="cmp"><div><b>他预期</b>${q[1]}</div><div><b>实际</b>${q[2]}</div></div><div class="faces">${[1,0,-1].map(v=>`<button data-v="${v}">${face(v)}${v>0?'满意':v<0?'负面':'一般'}</button>`).join('')}</div><div class="msg" id="msg"></div></div>`;
+  document.querySelectorAll('.faces button').forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(v===q[3]){good(b,8);setMsg(q[4],'ok');document.querySelectorAll('.faces button').forEach(x=>x.disabled=true);setTimeout(()=>{k++;if(k<5)one();else part4C(ST.map(x=>[x[0],x[5]]))},750)}
+   else{bad(b,'4B-'+k,'点外卖“'+q[0]+'”：预期“'+q[1]+'”，实际“'+q[2]+'”。情绪是？',q[3]>0?'满意':q[3]<0?'负面':'一般',q[4]);setMsg('比一比“预期”和“实际”。','no')}})}
+ one();cur={kind:'L4B',ans(){return ST[k]?ST[k][3]:null},tick(){}}}
+function part4C(pts){
+ const R0={n:'点外卖',pts:pts,a:2,why:'等了一个多小时、不知道骑手到哪：这就是机会点。还记得任务树里的“看骑手位置”吗？'};
+ let p=0,state='ride';const D=()=>7/K();
+ const X=i=>60+i*130,Y=v=>120-v*45;const d=R0.pts.map((q,i)=>`${i?'L':'M'}${X(i)} ${Y(q[1])}`).join(' ');
+ main.innerHTML=`<div class="lvtitle"><b>③ 点外卖的情绪过山车</b><span class="sub"></span></div><div class="card"><div class="sub">这是你刚刚判出来的曲线。过山车经过情绪最低的那一站时，按“在这儿改！”</div>
+ <svg class="ride" viewBox="0 0 640 300" id="rs"><line x1="20" x2="620" y1="${Y(0)}" y2="${Y(0)}" stroke="var(--line)" stroke-dasharray="5 5"/><path id="trk" d="${d}" fill="none" stroke="var(--teal)" stroke-width="5" stroke-linejoin="round"/>
+ ${R0.pts.map((q,i)=>`<circle cx="${X(i)}" cy="${Y(q[1])}" r="9" fill="var(--card)" stroke="${q[1]<0?'var(--bad)':'var(--teal)'}" stroke-width="4"/><text x="${X(i)}" y="285" text-anchor="middle" font-size="20" font-weight="700" fill="var(--ink)">${q[0]}</text>`).join('')}
+ <g id="cart"><rect x="-17" y="-24" width="34" height="22" rx="6" fill="var(--star)"/><circle cx="-8" cy="-2" r="5" fill="#222"/><circle cx="8" cy="-2" r="5" fill="#222"/><circle cx="0" cy="-14" r="6" fill="#F6D2B0"/></g></svg>
+ <div class="msg" id="msg"></div><button class="btn brake" id="bk">在这儿改！</button></div>`;
+ const trk=$('#trk'),len=trk.getTotalLength(),cart=$('#cart');
+ function place(){const pt=trk.getPointAtLength(len*p);cart.setAttribute('transform',`translate(${pt.x},${pt.y})`)}place();
+ $('#bk').onclick=()=>{if(state!=='ride')return;const lowP=R0.a/(R0.pts.length-1);
+  if(Math.abs(p-lowP)<.13){state='hit';good($('#bk'),20);setMsg(R0.why,'ok');setTimeout(levelDone,1800)}
+  else{state='miss';bad($('#bk'),'4C','过山车：情绪最低的一站在哪？',R0.pts[R0.a][0],R0.why,false);setMsg('这儿不是最低点。哪一站最低？','no');if(S.hearts>0)setTimeout(()=>{p=0;state='ride';setMsg('','')},900)}};
+ cur={kind:'L4C',tick(dt){if(S.hearts<=0)return;if(state==='ride'){p+=dt/D();if(p>=1)p=0;place()}}}}
+home();
+</script></body></html>
