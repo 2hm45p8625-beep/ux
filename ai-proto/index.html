@@ -26,49 +26,48 @@ h1{font-size:24px;color:var(--teal);margin:6px 0 2px}h2{font-size:19px;color:var
 .ok{font-size:14px;color:#3f4f4d;margin-top:6px}.ok b{color:var(--or)}
 .warn{color:var(--red);font-size:14px;margin:4px 0}
 .fx{font-size:14px}.fx div{margin-bottom:8px}
+.mode{display:flex;gap:8px;margin:8px 0 12px;flex-wrap:wrap}.mode button{flex:1;min-width:220px;border:2px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:8px 12px;cursor:pointer;font:inherit;text-align:left}.mode button b{display:block;color:var(--teal)}.mode button small{color:#5d6b69}.mode button.on{border-color:var(--teal);background:var(--tl)}
 @media print{.ex,.cp,.how,.chk{display:none}body{background:#fff}}
 </style></head><body><div class="w">
 <h1>用AI做你的App原型</h1>
 <p class="sub">不用Axure，让AI帮你写出一个能点的网页原型。一个人完成，填完下面的空，就能得到9段现成提示词，一段一段发给AI。</p>
+<div class="mode"><button id="mA"><b>A　给现有App加一个新功能</b><small>适合：你很熟悉某个App，想给它加个小功能</small></button><button id="mB"><b>B　做一个全新的产品</b><small>适合：你有自己的点子，想从零做一个</small></button></div>
 <div class="how">
-<div class="card"><b>① 填空</b><br>填你自己的App和新功能，约3分钟。不会填就点“填入示例”。</div>
+<div class="card"><b>① 填空</b><br><span id="how1"></span>约3分钟。不会填就点“填入示例”。</div>
 <div class="card"><b>② 一段一段发给AI</b><br>从“起点”开始，全部在<b>同一个对话</b>里做，别中途新开对话。先搭原型，再用五原则检查改好。，按顺序复制、发给你平时用的AI。每一段做完先看“检查一下”。</div>
 <div class="card"><b>③ 存成文件</b><br>把AI给的代码保存为 v0.html、v1.html……用浏览器双击打开就能点。每轮另存一个新文件，改坏了能退回。</div>
 </div>
 
-<h2>先想想：这个功能适合做吗？</h2>
-<div class="card chk"><label><input type="checkbox"> 功能够小，一个晚上能做完原型</label><label><input type="checkbox"> 能说清入口放在原App的哪一页</label><label><input type="checkbox"> 用户能从入口一条线走到完成</label><label><input type="checkbox"> 它产生的数据，原App里有地方能看到</label><label><input type="checkbox"> 它解决的是你自己真实遇到的问题</label>
-<div class="sub" style="margin:6px 0 0;font-size:14px">有没勾上的也能继续。功能太大就只做一条主流程，比如“智能推荐”只做“选偏好 → 看推荐结果”。</div></div>
+<h2 id="thinkh"></h2><div class="card chk" id="think"></div>
 
 <h2>第一步：填空</h2>
-<div class="ex"><button id="e1">填入示例：小课表 + 考试倒计时</button><button id="e2">填入示例：微聊 + 消息转待办</button><button id="e0">清空</button></div>
+<div class="ex"><button id="e1">填入示例：小课表 + 考试倒计时</button><button id="e2">填入示例：微聊 + 消息转待办</button><button id="e3">填入示例：校园拼单</button><button id="e4">填入示例：失物招领</button><button id="e0">清空</button></div>
 <div class="card"><div class="f" id="form"></div><div class="warn" id="miss"></div></div>
 
 <h2>第二步：9段提示词，按顺序发给AI</h2>
 <div id="steps"></div>
 
 <h2>做完了吗？最后你应该得到</h2>
-<div class="card" id="done"><b>一个文件：v7.html。</b>用浏览器双击就能打开，不用网络，不用装软件。逐条对一下：
-<div class="chk" style="margin-top:6px"><label><input type="checkbox"> 看起来像你熟悉的那个App，只还原了2到3个原有页面</label><label><input type="checkbox"> 新功能的入口放在原App里自然的地方</label><label><input type="checkbox"> 从入口一路点到主任务完成，能真的输入、增加、删除</label><label><input type="checkbox"> 乱填会有具体提示，删除前有确认框</label><label><input type="checkbox"> 新功能的数据会让原App的某个页面跟着变</label><label><input type="checkbox"> 文字短而清楚，状态不只靠颜色，五原则检查改过至少一处</label><label><input type="checkbox"> 打开“高亮新增功能”能看出新加了什么；刷新后回到初始状态</label></div></div>
-<div class="card"><b>上台演示前（3分钟左右）</b><br>
-· 讲问题：原App哪里不方便（说你自己的真实经历）<br>· 讲方案：新功能一句话<br>· 点着讲：先打开“高亮新增功能”，指出入口在哪；再从入口走完主任务；再故意点一个出错提示；最后回原App页面看联动<br>· 讲一次追问：“我发现___，对AI说了___，结果___”（用第6、7轮的改前改后截图）<br>
-<span style="font-size:14px;color:#5d6b69">彩排清单：文件放桌面、双击能打开；教室电脑上先打开一次，浏览器放大到110%；刷新就是初始状态，上台前刷新一次；演示路线背熟。</span></div>
+<div class="card" id="done"></div>
+<div class="card" id="tips"></div>
 <h2>AI做得不对？直接发这句</h2>
 <div class="card fx" id="fx"></div>
 <div class="card" style="font-size:14px;color:#5d6b69">不同的AI效果不一样。一次没做好很正常，用上面的话追问一次就行。写页面的AI要能一次输出完整代码；输出被截断时，用“分两次输出”那一句。</div>
 </div>
 <script>
-var F=[["app","现有App名称","例如：小课表",1],["nav","底部有哪些入口","例如：课表、校园、我的",1],["pages","要还原的2到3个原有页面","例如：课表首页、课程详情、我的",1],["color","App主色","例如：青绿色"],
+var FA=[["app","现有App名称","例如：小课表",1],["nav","底部有哪些入口","例如：课表、校园、我的",1],["pages","要还原的2到3个原有页面","例如：课表首页、课程详情、我的",1],["color","App主色","例如：青绿色"],
 ["feat","新功能名","例如：考试倒计时",1],["entry","入口放在哪一页的什么位置","例如：课程详情页底部一行",1],["newpages","新功能的2到3个新页面","例如：考试列表、添加考试、复习计划",1],["task","主任务：用户用它完成的一件事","例如：添加一场考试，看到倒计时和复习计划",1],
 ["input","用户在新功能里要输入或选择什么","例如：选课程、选考试日期",1],["empty","哪个页面一开始可能是空的","例如：考试列表",1],["irrev","哪个操作做了就回不来","例如：删除考试",1],["link","联动：新功能的数据要在原App哪个页面显示什么","例如：课表首页顶部显示最近一场考试还有几天",1]];
-var EX={e1:{app:"小课表",nav:"课表、校园、我的",pages:"课表首页、课程详情、我的",color:"青绿色",feat:"考试倒计时",entry:"课程详情页底部的一行入口",newpages:"考试列表、添加考试、复习计划",task:"添加一场考试，看到还有几天和复习计划",input:"选课程、选考试日期",empty:"考试列表",irrev:"删除考试",link:"课表首页顶部显示最近一场考试还有几天和复习进度"},
+var EXA={e1:{app:"小课表",nav:"课表、校园、我的",pages:"课表首页、课程详情、我的",color:"青绿色",feat:"考试倒计时",entry:"课程详情页底部的一行入口",newpages:"考试列表、添加考试、复习计划",task:"添加一场考试，看到还有几天和复习计划",input:"选课程、选考试日期",empty:"考试列表",irrev:"删除考试",link:"课表首页顶部显示最近一场考试还有几天和复习进度"},
 e2:{app:"微聊",nav:"微聊、通讯录、发现、我",pages:"消息列表、聊天页、我",color:"绿色",feat:"消息转待办",entry:"聊天页里点一条消息弹出的菜单",newpages:"转为待办、待办列表",task:"把一条消息转成待办，并在待办列表里看到",input:"待办内容、截止日期和时间",empty:"待办列表",irrev:"删除待办",link:"消息列表首页顶部显示还有几个待办没完成"}};
-var V={},$=function(i){return document.getElementById(i)};var KEY='aiProtoForm';function save(){try{localStorage.setItem(KEY,JSON.stringify(V))}catch(e){}}function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
-var fm=$("form");F.forEach(function(f){var d=document.createElement("div");d.innerHTML='<label>'+f[1]+(f[3]?'':' <small>（选填）</small>')+'</label><input id="f_'+f[0]+'" placeholder="'+f[2]+'" maxlength="60" autocomplete="off">';fm.appendChild(d);d.querySelector("input").oninput=function(e){V[f[0]]=e.target.value.trim();save();draw()}});
+var V={},$=function(i){return document.getElementById(i)};
+function KEY(){return 'aiProtoForm'+(MODE==="B"?"B":"")}
+function save(){try{localStorage.setItem(KEY(),JSON.stringify(V))}catch(e){}}function load(){try{return JSON.parse(localStorage.getItem(KEY())||'{}')||{}}catch(e){return {}}}
+function buildForm(){var fm=$("form");fm.innerHTML="";F.forEach(function(f){var d=document.createElement("div");d.innerHTML='<label>'+f[1]+(f[3]?'':' <small>（选填）</small>')+'</label><input id="f_'+f[0]+'" placeholder="'+f[2]+'" maxlength="60" autocomplete="off">';fm.appendChild(d);d.querySelector("input").oninput=function(e){V[f[0]]=e.target.value.trim();save();draw()}})}
 function setAll(o){F.forEach(function(f){var v=o?o[f[0]]||"":"";$("f_"+f[0]).value=v;V[f[0]]=v});save();draw()}
-$("e1").onclick=function(){setAll(EX.e1)};$("e2").onclick=function(){setAll(EX.e2)};$("e0").onclick=function(){setAll(null)};
+$("e1").onclick=function(){setAll(EX.e1)};$("e2").onclick=function(){setAll(EX.e2)};$("e3").onclick=function(){setAll(EX.e3)};$("e4").onclick=function(){setAll(EX.e4)};$("e0").onclick=function(){setAll(null)};
 function g(k){return V[k]?V[k]:"\u0001"+F.filter(function(f){return f[0]===k})[0][1]+"\u0002"}
-var S=[
+var SA=[
 {g:"A　先把原型搭起来",t:"起点：先做出“现有App”",why:"先让AI做出你要加功能的那个App，只还原几个页面，这一步不加新功能。",f:"v0.html",
  p:function(){var c=V.color?"主色"+V.color+"，":"";return "做一个手机App“"+g("app")+"”的可点击原型，单文件HTML，不依赖网络，不引用任何外部文件，手机宽375px居中显示，图标用emoji，"+c+"不要使用任何真实软件的logo。只做这几个页面："+g("pages")+"。底部有“"+g("nav")+"”几个入口，可以切换。其他功能点了只提示“这是原有功能，原型里不展开”。页面之间能互相跳转，有返回键。页面角落用小字写“课程作业原型”。"},
  ok:["每个入口都能点，页面能切换","没做的功能，点了有“这是原有功能”的提示","看起来像你熟悉的那个App"]},
@@ -96,6 +95,47 @@ var S=[
 {g:"C　上台前",tag:"",t:"第8轮：标出哪些是新加的",why:"上台演示用：一打开就让大家看到新功能放在了哪里。在最新那版的基础上做。",f:"v7.html（上台演示用这一版）",
  p:function(){return "在刚才这份HTML的基础上，在页面顶部加一个开关“高亮新增功能”。打开后，所有新增的入口和新页面的标题，都用橙色虚线框加“新”字角标标出来；关闭后恢复原样。不要改其他任何功能，输出完整HTML。"},
  ok:["打开开关，新功能的位置都被标出来","关掉开关，页面和之前完全一样","刷新页面是初始状态，上台前刷新一次"]}];
+
+var FB=[["name","产品名称","例如：校园拼单",1],["idea","一句话：给谁用、帮他解决什么","例如：帮同宿舍的人凑单拼外卖，省配送费",1],["task","主任务：用户用它完成的一件事","例如：发起一个拼单，别人加入，凑够金额",1],["pages","页面清单（3到5页，每页一句话）","例如：首页拼单列表、发起拼单、拼单详情、我的拼单",1],
+["color","主色","例如：橙色"],["input","用户要输入或选择什么","例如：店名、起送金额、截止时间",1],["empty","哪个页面一开始可能是空的","例如：我的拼单",1],["irrev","哪个操作做了就回不来","例如：取消拼单",1],["share","哪些数据要在多个页面保持一致","例如：拼单人数和已凑金额，在列表、详情、我的拼单里都一样",1]];
+var EXB={e3:{name:"校园拼单",idea:"帮同宿舍和同班同学凑单拼外卖，省配送费",task:"发起一个拼单，别人加入，凑够起送金额",pages:"首页拼单列表、发起拼单、拼单详情、我的拼单",color:"橙色",input:"店名、起送金额、截止时间、自己要点的金额",empty:"我的拼单",irrev:"取消拼单",share:"拼单人数和已凑金额，在首页列表、拼单详情、我的拼单里要一样"},
+e4:{name:"失物招领",idea:"帮校园里丢了东西的人和捡到东西的人对上",task:"登记一件捡到的物品，失主找到并申请认领",pages:"首页物品列表、登记物品、物品详情、我的登记",color:"蓝色",input:"物品名称、捡到的地点、捡到的时间、联系方式",empty:"我的登记",irrev:"删除登记",share:"物品的状态（待认领或已认领），在首页列表、物品详情、我的登记里要一样"}};
+function gB(k){return g(k)}
+var SB=[
+{g:"A　先把原型搭起来",t:"起点：搭出整个产品的骨架",why:"先让AI搭出所有页面和导航，按钮可以先不起作用，这一步只看页面像不像。",f:"v0.html",
+ p:function(){var c=V.color?"主色"+V.color+"，":"";return "做一个手机App“"+g("name")+"”的可点击原型，单文件HTML，不依赖网络，不引用任何外部文件，手机宽375px居中显示，图标用emoji，"+c+"低保真风格：灰白底加一个强调色，不要使用任何真实软件的logo。产品是："+g("idea")+"。页面（最多5页）："+g("pages")+"。有导航，页面之间能互相跳转，有返回键，每个页面放几条示例数据，不要空白。页面角落用小字写“课程作业原型”。这一步只搭页面，按钮可以先不起作用。"},
+ ok:["页面都在，能互相跳转","每页有示例内容，不是空白","看起来像一个真的App"]},
+{tag:"对应课上：简单性（路线短而清楚）、可预测性（用户猜得到点哪里）",t:"第1轮：把主任务走通",why:"让用户从第一个页面出发，一路点到完成。",f:"v1.html",
+ p:function(){return "在这份HTML的基础上，让主任务“"+g("task")+"”从头到尾能走通，输出完整HTML。不新增页面，不改页面的整体布局。用户从第一个页面出发，一路点到完成，完成后要有明确的结果提示或结果页。"},
+ ok:["从第一个页面一路点到完成","每一步下一步该点哪里很明显","没有走不下去的死路"]},
+{tag:"对应课上：可见性（点了要有反馈）",t:"第2轮：让它真的能用",why:"从“只能看”变成“能自己输入、能用起来”。",f:"v2.html",
+ p:function(){return "在刚才这份HTML的基础上，不新增页面，输出完整HTML：用户可以自己输入或选择："+g("input")+"。所有数据都保存在同一个JS数组里，增加、修改、删除之后，各个页面显示保持一致。每个按钮点了都要有反应。"},
+ ok:["真的输入一条内容试试","增加、修改、删除后各页面显示一致","没有点了没反应的按钮"]},
+{tag:"对应课上：可见性（出错提示）、安全性（确认框、防重复）",t:"第3轮：乱点也不会坏",why:"补上出错提示、空状态、确认框，像真的产品。",f:"v3.html",
+ p:function(){return "在刚才这份HTML的基础上，不新增页面，输出完整HTML：①"+g("input")+"填错或漏填时，提示具体原因，不要只写“出错了”；②“"+g("empty")+"”没有内容时，显示一句说明，再加一个“下一步”按钮；③“"+g("irrev")+"”之前弹出确认框，写清后果，有“再想想”和“确定”两个按钮；④同样的内容不能重复添加；⑤操作成功后给一句简短提示。"},
+ ok:["故意乱填、漏填，看提示是不是具体","把内容删光，看空状态","做那个回不来的操作，看有没有确认框"]},
+{tag:"对应课上：可记忆性（同一个东西到处一致）",t:"第4轮：各页面的数据保持一致",why:"让一个页面里的数据变了，其他页面马上跟着变，产品才像一个整体。",f:"v4.html",
+ p:function(){return "在刚才这份HTML的基础上，输出完整HTML：要保持一致的数据是——"+g("share")+"。一个页面里的数据一变，其他页面里的同一份数据马上跟着变。其他功能不要改。"},
+ ok:["在一个页面改数据，去其他页面看是不是跟着变","同一个数据在各页的写法一样"]},
+Object.assign({},SA[5],{g:"B　用课上学的方法，检查并改好"}),
+{tag:"对应课上：五原则（简单性、可见性、可记忆性、可预测性、安全性）",t:"第6轮：用五原则检查你的原型",why:"让AI当检查员，只指问题，不改代码。需要先把v5.html的代码粘贴在提示词后面。",f:"不用保存（只看问题）",
+ p:function(){return "请用五项原则（简单性、可见性、可记忆性、可预测性、安全性）检查我的App原型，不要夸我，只指出问题，不要改代码。产品：“"+g("name")+"”；主任务："+g("task")+"。按每条原则回答：这条原则下的问题（没有就写“没发现问题”）→ 具体要改哪个页面的哪个地方。每条不超过50字；只根据代码里有的内容，不要编造；最后给出“最值得先改的一处”。我的原型代码在下面：\n（把 v5.html 的全部代码粘贴到这里）"},
+ ok:SA[6].ok},
+SA[7],
+{g:"C　上台前",tag:"",t:"第8轮：标出主任务路线",why:"上台演示用：一打开就让大家看到该点哪里。在最新那版的基础上做。",f:"v7.html（上台演示用这一版）",
+ p:function(){return "在刚才这份HTML的基础上，在页面顶部加一个开关“显示主任务路线”。打开后，主任务“"+g("task")+"”要依次点的每个按钮，都用橙色虚线框框起来，并在角上标1、2、3……的序号；关闭后恢复原样。不要改其他任何功能，输出完整HTML。"},
+ ok:["打开开关，路线上每个按钮都有序号","按序号点一遍，正好走完主任务","关掉开关，页面和之前完全一样；刷新是初始状态"]}];
+var TXT={A:{how1:"填你自己的App和新功能。",th:"先想想：这个功能适合做吗？",
+ think:["功能够小，一个晚上能做完原型","能说清入口放在原App的哪一页","用户能从入口一条线走到完成","它产生的数据，原App里有地方能看到","它解决的是你自己真实遇到的问题"],
+ hint:"有没勾上的也能继续。功能太大就只做一条主流程，比如“智能推荐”只做“选偏好 → 看推荐结果”。",
+ done:["看起来像你熟悉的那个App，只还原了2到3个原有页面","新功能的入口放在原App里自然的地方","从入口一路点到主任务完成，能真的输入、增加、删除","乱填会有具体提示，删除前有确认框","新功能的数据会让原App的某个页面跟着变","文字短而清楚，状态不只靠颜色，五原则检查改过至少一处","打开“高亮新增功能”能看出新加了什么；刷新后回到初始状态"],
+ tip:"· 讲问题：原App哪里不方便（说你自己的真实经历）<br>· 讲方案：新功能一句话<br>· 点着讲：先打开“高亮新增功能”，指出入口在哪；再从入口走完主任务；再故意点一个出错提示；最后回原App页面看联动<br>· 讲一次追问：“我发现___，对AI说了___，结果___”（用第6、7轮的改前改后截图）<br>"},
+B:{how1:"填你自己的产品点子。",th:"先想想：这个点子适合做吗？",
+ think:["一句话能说清：给谁用、帮他解决什么","主任务能一条线走完，不超过5步","页面不超过5个","它解决的是你自己真实遇到的问题","不需要真实账号、联网、付钱（原型里用假数据）"],
+ hint:"有没勾上的也能继续。点子太大就只做一条主任务，比如“同学社交”只做“发一条动态 → 别人点赞”。",
+ done:["页面不超过5个，导航清楚，一看就知道这是做什么的","从第一个页面一路点到主任务完成，能真的输入、增加、删除","乱填会有具体提示，删除或取消前有确认框，空页面有说明","同一份数据在各个页面显示一致","文字短而清楚，状态不只靠颜色，五原则检查改过至少一处","打开“显示主任务路线”，按序号点一遍正好走完；刷新后回到初始状态"],
+ tip:"· 讲问题：谁遇到什么不方便（说你自己的真实经历）<br>· 讲方案：产品一句话<br>· 点着讲：先打开“显示主任务路线”；按序号走完主任务；再故意点一个出错提示；最后看数据在各页面一致<br>· 讲一次追问：“我发现___，对AI说了___，结果___”（用第6、7轮的改前改后截图）<br>"}};
+var MODE="A",F=FA,S=SA,EX={e1:EXA.e1,e2:EXA.e2,e3:EXB.e3,e4:EXB.e4};
 var FX=[["AI把原App改了","你改了原有页面。请恢复，只在{入口位置}加一个入口，其他一律不动。"],["新页面风格不一致","新页面的颜色、按钮、圆角要和原有页面完全一致，请照着{某个原有页面}的样式改。"],["点了没反应","点“XX”没反应，请检查它的点击事件，说出原因，再改。"],["文字挤在一起","“XX”页文字太挤，加行距，长文字换行，不要和按钮重叠。"],["输出被截断","请分两次输出，先输出前半部分，我说继续再输出后半部分。"],["改乱了","回到上一版，只改“XX”这一处。"],["AI忘了前面的内容（新开了对话，或对话太长）","先把最新那一版的全部代码粘贴过去，再说：“这是我的App原型，请在它的基础上继续。”然后再发下一段提示词。"]];
 $("fx").innerHTML=FX.map(function(x){return '<div><b>'+x[0]+'：</b>'+x[1]+'</div>'}).join("");
 function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
@@ -109,6 +149,16 @@ function draw(){var n=F.filter(function(f){return f[3]&&!V[f[0]]}).length;
 function cp(t,b){var done=function(){b.textContent="已复制";setTimeout(function(){b.textContent="复制这一段"},1500)};
  var fb=function(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();done()};
  try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
-(function(){var o=load();F.forEach(function(f){if(o[f[0]]){$("f_"+f[0]).value=o[f[0]];V[f[0]]=o[f[0]]}})})();
-draw();
+function setMode(m,keep){MODE=m;F=m==="B"?FB:FA;S=m==="B"?SB:SA;V={};
+ try{localStorage.setItem('aiProtoMode',m)}catch(e){}
+ $("mA").className=m==="A"?"on":"";$("mB").className=m==="B"?"on":"";
+ ["e1","e2"].forEach(function(i){$(i).style.display=m==="A"?"":"none"});["e3","e4"].forEach(function(i){$(i).style.display=m==="B"?"":"none"});
+ var T=TXT[m];$("how1").textContent=T.how1;$("thinkh").textContent=T.th;
+ $("think").innerHTML=T.think.map(function(x){return '<label><input type="checkbox"> '+x+'</label>'}).join("")+'<div class="sub" style="margin:6px 0 0;font-size:14px">'+T.hint+'</div>';
+ $("done").innerHTML='<b>一个文件：v7.html。</b>用浏览器双击就能打开，不用网络，不用装软件。逐条对一下：<div class="chk" style="margin-top:6px">'+T.done.map(function(x){return '<label><input type="checkbox"> '+x+'</label>'}).join("")+'</div>';
+ $("tips").innerHTML='<b>上台演示前（3分钟左右）</b><br>'+T.tip+'<span style="font-size:14px;color:#5d6b69">彩排清单：文件放桌面、双击能打开；教室电脑上先打开一次，浏览器放大到110%；刷新就是初始状态，上台前刷新一次；演示路线背熟。</span>';
+ buildForm();var o=load();F.forEach(function(f){if(o[f[0]]){$("f_"+f[0]).value=o[f[0]];V[f[0]]=o[f[0]]}});draw()}
+$("mA").onclick=function(){setMode("A")};$("mB").onclick=function(){setMode("B")};
+var m0="A";try{m0=localStorage.getItem('aiProtoMode')||"A"}catch(e){}if(location.hash==="#new")m0="B";if(location.hash==="#add")m0="A";
+setMode(m0==="B"?"B":"A");
 </script></body></html>
