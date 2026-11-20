@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>用AI做你的App原型</title>
+<style>
+:root{--bg:#fffaf0;--ink:#2d3b3a;--teal:#1f6f68;--tl:#e3efec;--or:#cc6228;--line:#e8dfcc;--red:#d9503f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 -apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+.w{max-width:860px;margin:0 auto;padding:14px 16px 60px}
+h1{font-size:24px;color:var(--teal);margin:6px 0 2px}h2{font-size:19px;color:var(--teal);margin:26px 0 8px}
+.sub{color:#5d6b69;margin:0 0 10px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:12px}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:640px){.how{grid-template-columns:1fr}}
+.how b{color:var(--or)}
+.ex{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 10px}
+.ex button,.cp{border:1px solid var(--teal);background:#fff;color:var(--teal);border-radius:16px;padding:3px 14px;cursor:pointer;font:inherit;font-size:14px}
+.cp{background:var(--teal);color:#fff}
+.f{display:grid;grid-template-columns:1fr 1fr;gap:10px 14px}@media(max-width:640px){.f{grid-template-columns:1fr}}
+.f label{font-weight:700;font-size:14px;display:block}.f label small{font-weight:400;color:#7a8785}
+.f input{width:100%;padding:8px 10px;border:2px solid var(--line);border-radius:10px;font:inherit;background:#fff;color:var(--ink)}.f input:focus{outline:none;border-color:var(--teal)}
+.f .full{grid-column:1/-1}
+.chk label{display:block;font-size:15px}
+.st{border-left:5px solid var(--teal)}
+.st h3{margin:0;font-size:18px}.tg{display:inline-block;background:#fff3e6;color:#a9501f;border-radius:10px;padding:1px 10px;font-size:13px;margin:0 0 8px}.st .why{color:#5d6b69;font-size:14px;margin:2px 0 8px}
+.pr{background:var(--tl);border-radius:10px;padding:10px 12px;font-size:15px;white-space:pre-wrap;word-break:break-word}
+.pr mark{background:#ffe1dc;color:var(--red);border-radius:4px;padding:0 3px}
+.row{display:flex;align-items:center;gap:10px;margin-top:8px;flex-wrap:wrap}
+.ok{font-size:14px;color:#3f4f4d;margin-top:6px}.ok b{color:var(--or)}
+.warn{color:var(--red);font-size:14px;margin:4px 0}
+.fx{font-size:14px}.fx div{margin-bottom:8px}
+@media print{.ex,.cp,.how,.chk{display:none}body{background:#fff}}
+</style></head><body><div class="w">
+<h1>用AI做你的App原型</h1>
+<p class="sub">不用Axure，让AI帮你写出一个能点的网页原型。一个人完成，填完下面的空，就能得到9段现成提示词，一段一段发给AI。</p>
+<div class="how">
+<div class="card"><b>① 填空</b><br>填你自己的App和新功能，约3分钟。不会填就点“填入示例”。</div>
+<div class="card"><b>② 一段一段发给AI</b><br>从“起点”开始，全部在<b>同一个对话</b>里做，别中途新开对话。先搭原型，再用五原则检查改好。，按顺序复制、发给你平时用的AI。每一段做完先看“检查一下”。</div>
+<div class="card"><b>③ 存成文件</b><br>把AI给的代码保存为 v0.html、v1.html……用浏览器双击打开就能点。每轮另存一个新文件，改坏了能退回。</div>
+</div>
+
+<h2>先想想：这个功能适合做吗？</h2>
+<div class="card chk"><label><input type="checkbox"> 功能够小，一个晚上能做完原型</label><label><input type="checkbox"> 能说清入口放在原App的哪一页</label><label><input type="checkbox"> 用户能从入口一条线走到完成</label><label><input type="checkbox"> 它产生的数据，原App里有地方能看到</label><label><input type="checkbox"> 它解决的是你自己真实遇到的问题</label>
+<div class="sub" style="margin:6px 0 0;font-size:14px">有没勾上的也能继续。功能太大就只做一条主流程，比如“智能推荐”只做“选偏好 → 看推荐结果”。</div></div>
+
+<h2>第一步：填空</h2>
+<div class="ex"><button id="e1">填入示例：小课表 + 考试倒计时</button><button id="e2">填入示例：微聊 + 消息转待办</button><button id="e0">清空</button></div>
+<div class="card"><div class="f" id="form"></div><div class="warn" id="miss"></div></div>
+
+<h2>第二步：9段提示词，按顺序发给AI</h2>
+<div id="steps"></div>
+
+<h2>做完了吗？最后你应该得到</h2>
+<div class="card" id="done"><b>一个文件：v7.html。</b>用浏览器双击就能打开，不用网络，不用装软件。逐条对一下：
+<div class="chk" style="margin-top:6px"><label><input type="checkbox"> 看起来像你熟悉的那个App，只还原了2到3个原有页面</label><label><input type="checkbox"> 新功能的入口放在原App里自然的地方</label><label><input type="checkbox"> 从入口一路点到主任务完成，能真的输入、增加、删除</label><label><input type="checkbox"> 乱填会有具体提示，删除前有确认框</label><label><input type="checkbox"> 新功能的数据会让原App的某个页面跟着变</label><label><input type="checkbox"> 文字短而清楚，状态不只靠颜色，五原则检查改过至少一处</label><label><input type="checkbox"> 打开“高亮新增功能”能看出新加了什么；刷新后回到初始状态</label></div></div>
+<div class="card"><b>上台演示前（3分钟左右）</b><br>
+· 讲问题：原App哪里不方便（说你自己的真实经历）<br>· 讲方案：新功能一句话<br>· 点着讲：先打开“高亮新增功能”，指出入口在哪；再从入口走完主任务；再故意点一个出错提示；最后回原App页面看联动<br>· 讲一次追问：“我发现___，对AI说了___，结果___”（用第6、7轮的改前改后截图）<br>
+<span style="font-size:14px;color:#5d6b69">彩排清单：文件放桌面、双击能打开；教室电脑上先打开一次，浏览器放大到110%；刷新就是初始状态，上台前刷新一次；演示路线背熟。</span></div>
+<h2>AI做得不对？直接发这句</h2>
+<div class="card fx" id="fx"></div>
+<div class="card" style="font-size:14px;color:#5d6b69">不同的AI效果不一样。一次没做好很正常，用上面的话追问一次就行。写页面的AI要能一次输出完整代码；输出被截断时，用“分两次输出”那一句。</div>
+</div>
+<script>
+var F=[["app","现有App名称","例如：小课表",1],["nav","底部有哪些入口","例如：课表、校园、我的",1],["pages","要还原的2到3个原有页面","例如：课表首页、课程详情、我的",1],["color","App主色","例如：青绿色"],
+["feat","新功能名","例如：考试倒计时",1],["entry","入口放在哪一页的什么位置","例如：课程详情页底部一行",1],["newpages","新功能的2到3个新页面","例如：考试列表、添加考试、复习计划",1],["task","主任务：用户用它完成的一件事","例如：添加一场考试，看到倒计时和复习计划",1],
+["input","用户在新功能里要输入或选择什么","例如：选课程、选考试日期",1],["empty","哪个页面一开始可能是空的","例如：考试列表",1],["irrev","哪个操作做了就回不来","例如：删除考试",1],["link","联动：新功能的数据要在原App哪个页面显示什么","例如：课表首页顶部显示最近一场考试还有几天",1]];
+var EX={e1:{app:"小课表",nav:"课表、校园、我的",pages:"课表首页、课程详情、我的",color:"青绿色",feat:"考试倒计时",entry:"课程详情页底部的一行入口",newpages:"考试列表、添加考试、复习计划",task:"添加一场考试，看到还有几天和复习计划",input:"选课程、选考试日期",empty:"考试列表",irrev:"删除考试",link:"课表首页顶部显示最近一场考试还有几天和复习进度"},
+e2:{app:"微聊",nav:"微聊、通讯录、发现、我",pages:"消息列表、聊天页、我",color:"绿色",feat:"消息转待办",entry:"聊天页里点一条消息弹出的菜单",newpages:"转为待办、待办列表",task:"把一条消息转成待办，并在待办列表里看到",input:"待办内容、截止日期和时间",empty:"待办列表",irrev:"删除待办",link:"消息列表首页顶部显示还有几个待办没完成"}};
+var V={},$=function(i){return document.getElementById(i)};var KEY='aiProtoForm';function save(){try{localStorage.setItem(KEY,JSON.stringify(V))}catch(e){}}function load(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){return {}}}
+var fm=$("form");F.forEach(function(f){var d=document.createElement("div");d.innerHTML='<label>'+f[1]+(f[3]?'':' <small>（选填）</small>')+'</label><input id="f_'+f[0]+'" placeholder="'+f[2]+'" maxlength="60" autocomplete="off">';fm.appendChild(d);d.querySelector("input").oninput=function(e){V[f[0]]=e.target.value.trim();save();draw()}});
+function setAll(o){F.forEach(function(f){var v=o?o[f[0]]||"":"";$("f_"+f[0]).value=v;V[f[0]]=v});save();draw()}
+$("e1").onclick=function(){setAll(EX.e1)};$("e2").onclick=function(){setAll(EX.e2)};$("e0").onclick=function(){setAll(null)};
+function g(k){return V[k]?V[k]:"\u0001"+F.filter(function(f){return f[0]===k})[0][1]+"\u0002"}
+var S=[
+{g:"A　先把原型搭起来",t:"起点：先做出“现有App”",why:"先让AI做出你要加功能的那个App，只还原几个页面，这一步不加新功能。",f:"v0.html",
+ p:function(){var c=V.color?"主色"+V.color+"，":"";return "做一个手机App“"+g("app")+"”的可点击原型，单文件HTML，不依赖网络，不引用任何外部文件，手机宽375px居中显示，图标用emoji，"+c+"不要使用任何真实软件的logo。只做这几个页面："+g("pages")+"。底部有“"+g("nav")+"”几个入口，可以切换。其他功能点了只提示“这是原有功能，原型里不展开”。页面之间能互相跳转，有返回键。页面角落用小字写“课程作业原型”。"},
+ ok:["每个入口都能点，页面能切换","没做的功能，点了有“这是原有功能”的提示","看起来像你熟悉的那个App"]},
+{tag:"对应课上：简单性（入口少而清楚）、可预测性（用户猜得到点哪里）",t:"第1轮：加入口，走通主流程",why:"在原App里加上新功能的入口，从入口点到完成，先走通一遍。",f:"v1.html",
+ p:function(){return "在这份HTML的基础上，只新增功能“"+g("feat")+"”，输出完整HTML。入口放在："+g("entry")+"。新增页面："+g("newpages")+"。主任务路线：从入口一路点到完成，要完成的事是——"+g("task")+"。新页面要沿用原App的颜色、按钮和卡片样式。不要改动原有页面的内容和样式，只在放入口的地方加一个入口。先放一两条示例数据，让新页面不是空的。"},
+ ok:["从入口一路点到主任务完成","原有页面和v0一样，只多了一个入口","新页面看起来像原App的一部分"]},
+{tag:"对应课上：可见性（点了要有反馈）",t:"第2轮：让它真的能用",why:"从“只能看”变成“能自己输入、能用起来”。",f:"v2.html",
+ p:function(){return "在刚才这份HTML的基础上，只完善“"+g("feat")+"”，不改原有页面，输出完整HTML：用户可以自己输入或选择："+g("input")+"。新功能的数据都保存在同一个JS数组里，增加、修改、删除之后，各个页面显示保持一致。每个按钮点了都要有反应。"},
+ ok:["真的输入一条内容试试","增加、修改、删除后各页面显示一致","没有点了没反应的按钮"]},
+{tag:"对应课上：可见性（出错提示）、安全性（确认框、防重复）",t:"第3轮：乱点也不会坏",why:"补上出错提示、空状态、确认框，像真的产品。",f:"v3.html",
+ p:function(){return "在刚才这份HTML的基础上，只完善“"+g("feat")+"”，不改原有页面，输出完整HTML：①"+g("input")+"填错或漏填时，提示具体原因，不要只写“出错了”；②“"+g("empty")+"”没有内容时，显示一句说明，再加一个“下一步”按钮；③“"+g("irrev")+"”之前弹出确认框，写清后果，有“再想想”和“确定”两个按钮；④同样的内容不能重复添加；⑤操作成功后给一句简短提示。"},
+ ok:["故意乱填、漏填，看提示是不是具体","把内容删光，看空状态","做那个回不来的操作，看有没有确认框"]},
+{tag:"对应课上：可记忆性（一致、位置自然）",t:"第4轮：和原来的App联动",why:"让新功能不再是孤岛，和原App的页面互相影响。",f:"v4.html",
+ p:function(){return "在刚才这份HTML的基础上，让“"+g("feat")+"”和原App联动，输出完整HTML："+g("link")+"。数据要同步：新功能里的数据一变，原App里这个地方马上跟着变。其他原有内容不要改。"},
+ ok:["改一下新功能里的数据，回原App页面看是不是跟着变","联动的地方放得自然，不突兀"]},
+{g:"B　用课上学的方法，检查并改好",tag:"对应课上：文字与图标（文字要短而清楚、不只靠颜色、图标一眼认得出）",t:"第5轮：改界面上的文字和图标",why:"只改文字和图标，不改功能。让每个按钮、提示都看得懂。",f:"v5.html",
+ p:function(){return "在刚才这份HTML的基础上，只修改界面上的文字和图标，不改任何功能和页面结构，输出完整HTML：①按钮和标签的文字不超过8个字，用动词开头，意思直接；②提示语要具体，不超过20个字，不用专业术语；③状态不能只用颜色区分，要加文字或形状；④图标要一眼认得出，拿不准的图标旁边加文字；⑤同一个意思，整个App只用同一个词。"},
+ ok:["按钮上的字短而清楚","红绿状态旁边有文字，看不出颜色也看得懂","同一个意思没有两种叫法"]},
+{tag:"对应课上：五原则（简单性、可见性、可记忆性、可预测性、安全性）",t:"第6轮：用五原则检查你的原型",why:"让AI当检查员，只指问题，不改代码。需要先把v5.html的代码粘贴在提示词后面。",f:"不用保存（只看问题）",
+ p:function(){return "请用五项原则（简单性、可见性、可记忆性、可预测性、安全性）检查我的App原型，不要夸我，只指出问题，不要改代码。产品：“"+g("app")+"”的新功能“"+g("feat")+"”；主任务："+g("task")+"。按每条原则回答：这条原则下的问题（没有就写“没发现问题”）→ 具体要改哪个页面的哪个地方。每条不超过50字；只根据代码里有的内容，不要编造；最后给出“最值得先改的一处”。我的原型代码在下面：\n（把 v5.html 的全部代码粘贴到这里）"},
+ ok:["5条原则每条都有回答","每个问题都说清了哪个页面的哪个地方","最后有“最值得先改的一处”","你自己点一遍，看看AI说的问题是不是真的有"]},
+{tag:"对应课上：回到检查，改完再点一遍",t:"第7轮：改掉最该先改的一处",why:"每次只改一处，改完点一遍。有时间再选下一处，重复发这一句，把“这一处”换成第2处。",f:"v6.html",
+ p:function(){return "请只改你刚才检查出的“最值得先改的一处”，原有页面和其他功能都不要动，输出完整HTML。"},
+ ok:["问题真的改掉了","其他地方没有被改乱","留一张改前、一张改后的截图（汇报用得上）"]},
+{g:"C　上台前",tag:"",t:"第8轮：标出哪些是新加的",why:"上台演示用：一打开就让大家看到新功能放在了哪里。在最新那版的基础上做。",f:"v7.html（上台演示用这一版）",
+ p:function(){return "在刚才这份HTML的基础上，在页面顶部加一个开关“高亮新增功能”。打开后，所有新增的入口和新页面的标题，都用橙色虚线框加“新”字角标标出来；关闭后恢复原样。不要改其他任何功能，输出完整HTML。"},
+ ok:["打开开关，新功能的位置都被标出来","关掉开关，页面和之前完全一样","刷新页面是初始状态，上台前刷新一次"]}];
+var FX=[["AI把原App改了","你改了原有页面。请恢复，只在{入口位置}加一个入口，其他一律不动。"],["新页面风格不一致","新页面的颜色、按钮、圆角要和原有页面完全一致，请照着{某个原有页面}的样式改。"],["点了没反应","点“XX”没反应，请检查它的点击事件，说出原因，再改。"],["文字挤在一起","“XX”页文字太挤，加行距，长文字换行，不要和按钮重叠。"],["输出被截断","请分两次输出，先输出前半部分，我说继续再输出后半部分。"],["改乱了","回到上一版，只改“XX”这一处。"],["AI忘了前面的内容（新开了对话，或对话太长）","先把最新那一版的全部代码粘贴过去，再说：“这是我的App原型，请在它的基础上继续。”然后再发下一段提示词。"]];
+$("fx").innerHTML=FX.map(function(x){return '<div><b>'+x[0]+'：</b>'+x[1]+'</div>'}).join("");
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function plain(s){return s.replace(/\u0001/g,"【请填写：").replace(/\u0002/g,"】")}
+function draw(){var n=F.filter(function(f){return f[3]&&!V[f[0]]}).length;
+ $("miss").textContent=n?"还有 "+n+" 个必填空没填，提示词里红色的部分就是没填的。":"";
+ var h="";S.forEach(function(s,i){var raw=s.p(),html=esc(raw).replace(/\u0001([^\u0002]*)\u0002/g,'<mark>【请填写：$1】</mark>');
+  h+=(s.g?'<h2 style="margin-top:22px">'+s.g+'</h2>':'')+'<div class="card st"><h3>'+s.t+'</h3><div class="why">'+s.why+'</div>'+(s.tag?'<div class="tg">'+s.tag+'</div>':'')+'<div class="pr" id="p'+i+'">'+html+'</div><div class="row"><button class="cp" data-i="'+i+'">复制这一段</button><span style="font-size:14px;color:#5d6b69">AI给出代码后，保存为 <b>'+s.f+'</b></span></div><div class="ok"><b>检查一下：</b>'+s.ok.join("；")+'</div></div>'});
+ $("steps").innerHTML=h;
+ [].forEach.call(document.querySelectorAll(".cp"),function(b){b.onclick=function(){var t=plain(S[+b.dataset.i].p());cp(t,b)}})}
+function cp(t,b){var done=function(){b.textContent="已复制";setTimeout(function(){b.textContent="复制这一段"},1500)};
+ var fb=function(){var a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();done()};
+ try{navigator.clipboard.writeText(t).then(done,fb)}catch(e){fb()}}
+(function(){var o=load();F.forEach(function(f){if(o[f[0]]){$("f_"+f[0]).value=o[f[0]];V[f[0]]=o[f[0]]}})})();
+draw();
+</script></body></html>
